@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_question_ex_his" >
+  <resultMap id="QuestionExtraContentResult" class="com.ah3nong.wd.bean.QuestionExtraContentHis" >
+    <result column="id" property="id" jdbcType="INT" />
+    <result column="question_id" property="questionId" jdbcType="INT" />
+    <result column="extra_content" property="extraContent" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="DATETIME" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <select id="selectAll" resultMap="QuestionExtraContentResult" parameterClass="com.ah3nong.wd.bean.QuestionExtraContentHis" >
+    select id,question_id,extra_content,created_time,status
+    from wd_question_ex_his
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="QuestionExtraContentResult" parameterClass="com.ah3nong.wd.bean.QuestionExtraContentHis" >
+    select id,question_id,extra_content,created_time,status
+    from wd_question_ex_his
+    where id = #id:INT#
+  </select>
+  
+  <select id="selectByQuestionId" resultMap="QuestionExtraContentResult" parameterClass="com.ah3nong.wd.bean.QuestionExtraContentHis" >
+    select id,question_id,extra_content,created_time,status
+    from wd_question_ex_his
+    where question_id = #questionId:INT#
+  </select>
+  
+  <delete id="deleteByQuestionId" parameterClass="com.ah3nong.wd.bean.QuestionExtraContentHis" >
+    delete from wd_question_ex_his
+    where question_id = #questionId:INT#
+  </delete>
+  
+  <update id="updateByPrimaryKeySelective" parameterClass="com.ah3nong.wd.bean.QuestionExtraContentHis" >
+    update wd_question_ex_his
+    <dynamic prepend="set" >
+       <isNotNull prepend="," property="questionId" >
+        question_id = #questionId:INT#
+      </isNotNull>
+      <isNotNull prepend="," property="extraContent" >
+        extra_content = #extraContent:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="createdTime" >
+        created_time = #createdTime:DATETIME#
+      </isNotNull>
+      <isNotNull prepend="," property="status" >
+        status = #status:INT#
+      </isNotNull>
+    </dynamic>
+    where id = #id:INT#
+  </update>
+
+  <insert id="insert" parameterClass="com.ah3nong.wd.bean.QuestionExtraContentHis" >  
+    insert into wd_question_ex_his (id,question_id,extra_content,created_time,status)
+    values (#id:INT#,#questionId:INT#, #extraContent:VARCHAR#,#createdTime:DATETIME#, #status:TINYINT#)
+  </insert>
+  
+  <select id="countAll" parameterClass="com.ah3nong.wd.bean.QuestionExtraContentHis" resultClass="java.lang.Integer" >
+    select count(*) from wd_question_ex_his   
+  </select>
+ 
+    <select id="selectPaginationByPageNum" resultMap="QuestionExtraContentResult"
+		parameterClass="map">
+		select id,question_id,extra_content,created_time,status from wd_question_ex_his
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="questionId">
+				question_id = #questionId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="extraContent">
+				extra_content = #extraContent#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="createdTime">
+				created_time = #createdTime#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status = #status#
+			</isNotEmpty>
+		</dynamic>
+		order by id desc limit #start#,#size#
+	</select>
+	<select id="countPaginationByPageNum"
+		resultClass="java.lang.Integer" parameterClass="map">
+		select count(question_id)  from wd_question_ex_his
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="questionId">
+				question_id = #questionId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="extraContent">
+				extra_content = #extraContent#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status = #status#
+			</isNotEmpty>
+		</dynamic>
+		order by id desc
+	</select>  
+</sqlMap>

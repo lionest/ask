@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<include file="struts-question-admin.xml" />
+	<include file="struts-question.xml" />
+	<include file="struts-expert-admin.xml" />
+	<include file="struts-domain-admin.xml" />
+	<include file="struts-login-admin.xml" />
+	<include file="struts-keyword-admin.xml" />
+	<include file="struts-root.xml" />
+	<include file="struts-expert.xml" />
+	<include file="struts-center.xml" />
+	<include file="struts-domain.xml" />
+	<include file="struts-audit-admin.xml" />
+	<include file="struts-login.xml" />
+	<include file="struts-signup.xml" />
+	<include file="struts-s.xml" />
+	<include file="struts-member.xml" />
+	<include file="struts-topic.xml" />
+	<include file="struts-topic-admin.xml" />
+	<include file="struts-link.xml" />
+	<include file="struts-link-admin.xml" />
+	<include file="struts-article.xml" />
+	<include file="struts-notice.xml" />
+	<include file="struts-freemarker.xml" />
+	<include file="struts-user.xml" />
+	<include file="struts-sysdata-admin.xml" />
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.custom.i18n.resources" value="i18n/struts-messages" />
+	<package name="web" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="auth" class="com.ah3nong.wd.interceptor.UserOperationInterceptor" />
+			<interceptor-stack name="auth">
+				<interceptor-ref name="auth"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+			<interceptor name="adminAuth" class="com.ah3nong.wd.interceptor.AdminOperationInterceptor" />
+			<interceptor-stack name="adminAuth">
+				<interceptor-ref name="adminAuth"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<global-results>
+			<result name="error">/404.jsp</result>
+		</global-results>
+	</package>
+	<!-- 拦截action的404 -->
+	<package name="default" extends="struts-default">
+		<default-action-ref name="notFound" />
+		<action name="notFound">
+			<result>/404.jsp</result>
+		</action>
+	</package>
+</struts>

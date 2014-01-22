@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="web_fm" extends="web" namespace="/">
+		<!--首页 -->
+		<action name="indexfm" class="indexFmAction">
+			<result name="success">/html/index.html</result>
+		</action>
+		<!--分类 -->
+		<action name="domainfm" class="domainFmAction">
+			<result name="success">/html/domain/${domain}.html</result>
+		</action>
+		<!--问题详情 -->
+		<action name="detailQuestionfm" class="detailQuestionFmAction">
+			<result name="success">/html/question/${questionId}.html</result>
+		</action>
+	</package>
+</struts>

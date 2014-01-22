@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="  
+     http://www.springframework.org/schema/beans   
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/tx   
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+     http://www.springframework.org/schema/aop   
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="questionService"
+		class="com.ah3nong.wd.service.impl.QuestionServiceImpl">
+		<property name="questionDao" ref="questionDao"></property>
+		<property name="questionHisDao" ref="questionHisDao"></property>
+		<property name="probingDao" ref="probingDao"></property>
+		<property name="replyDao" ref="replyDao"></property>
+		<property name="expertDao" ref="expertDao"></property>
+		<property name="domainDao" ref="domainDao"></property>
+		<property name="questionKeywordDao" ref="questionKeywordDao"></property>
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean id="probingService"
+		class="com.ah3nong.wd.service.impl.ProbingServiceImpl">
+		<property name="probingDao" ref="probingDao"></property>
+		<property name="probingHisDao" ref="probingHisDao"></property>
+	</bean>
+	<bean id="replyService"
+		class="com.ah3nong.wd.service.impl.ReplyServiceImpl">
+		<property name="replyDao" ref="replyDao"></property>
+		<property name="replyHisDao" ref="replyHisDao"></property>
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean id="domainService"
+		class="com.ah3nong.wd.service.impl.DomainServiceImpl">
+		<property name="domainDao" ref="domainDao"></property>
+	</bean>
+	<bean id="expertService"
+		class="com.ah3nong.wd.service.impl.ExpertServiceImpl">
+		<property name="expertDao" ref="expertDao"></property>
+		 <property name="userDao" ref="userDao"></property>
+		<property name="userDomainDao" ref="userDomainDao"></property>
+		<property name="domainDao" ref="domainDao"></property>
+	</bean>
+	<bean id="userService"
+	  class="com.ah3nong.wd.service.impl.UserServiceImpl">
+	   <property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean id="keywordService"
+	  class="com.ah3nong.wd.service.impl.KeywordServiceImpl">
+	   <property name="keywordDao" ref="keywordDao"></property>
+	</bean>
+	<bean id="auditService"
+	  class="com.ah3nong.wd.service.impl.AuditServiceImpl">
+	   <property name="auditDao" ref="auditDao"></property>
+	</bean>
+	<bean id="adminService"
+	  class="com.ah3nong.wd.service.impl.AdminServiceImpl">
+	   <property name="adminDao" ref="adminDao"></property>
+	</bean>
+	<bean id="questionScoreService"
+	  class="com.ah3nong.wd.service.impl.QuestionScoreServiceImpl">
+	   <property name="questionScoreDao" ref="questionScoreDao"></property>
+	   <property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean id="questionKeywordService"
+	  class="com.ah3nong.wd.service.impl.QuestionKeywordServiceImpl">
+	   <property name="questionKeywordDao" ref="questionKeywordDao"></property>
+	</bean>
+	<bean id="replyCommentService"
+	  class="com.ah3nong.wd.service.impl.ReplyCommentServiceImpl">
+	   <property name="replyCommentDao" ref="replyCommentDao"></property>
+	</bean>
+	<bean id="topicService"
+	  class="com.ah3nong.wd.service.impl.TopicServiceImpl">
+	   <property name="topicDao" ref="topicDao"></property>
+	</bean>
+	<bean id="linkService"
+	  class="com.ah3nong.wd.service.impl.LinkServiceImpl">
+	   <property name="linkDao" ref="linkDao"></property>
+	</bean>
+	<bean id="articleService"
+	  class="com.ah3nong.wd.service.impl.ArticleServiceImpl">
+	   <property name="articleDao" ref="articleDao"></property>
+	</bean>
+	<bean id="noticeService"
+	  class="com.ah3nong.wd.service.impl.NoticeServiceImpl">
+	   <property name="noticeDao" ref="noticeDao"></property>
+	</bean>
+	<bean id="sysdataService"
+	  class="com.ah3nong.wd.service.impl.SysdataServiceImpl">
+	   <property name="sysdataDao" ref="sysdataDao"></property>
+	</bean>
+	<bean id="expertAttachmentService"
+	  class="com.ah3nong.wd.service.impl.ExpertAttachmentServiceImpl">
+	   <property name="expertAttachmentDao" ref="expertAttachmentDao"></property>
+	</bean>
+</beans>

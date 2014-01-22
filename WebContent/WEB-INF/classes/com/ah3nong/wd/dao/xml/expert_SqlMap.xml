@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_expert">
+	<resultMap id="ExpertResult" class="com.ah3nong.wd.bean.Expert">
+		<result column="id" property="id" jdbcType="INT" />
+		<result column="resume" property="resume" jdbcType="VARCHAR" />
+		<result column="photo_url" property="photoUrl"
+			jdbcType="VARCHAR" />
+		<result column="organization" property="organization"
+			jdbcType="VARCHAR" />
+		<result column="summary" property="summary" jdbcType="VARCHAR" />
+		<result column="recommended" property="recommended"
+			jdbcType="TINYINT" nullValue="0"/>
+	</resultMap>
+
+
+	<select id="selectByPrimaryKey" resultMap="ExpertResult"
+		parameterClass="com.ah3nong.wd.bean.Expert">
+		select id, resume,photo_url, organization, summary,recommended
+		from wd_expert where id = #id:INT#
+	</select>
+
+	<select id="selectByExpertId" resultClass="java.util.HashMap"
+		parameterClass="java.lang.Integer">
+		select e.organization as organization,u.full_name as fullName,u.username as username,
+		e.resume as resume,e.summary as summary,u.sex as
+		sex,e.recommended as recommended from wd_expert e,wd_user u
+		where e.id=u.id and e.id=#id:INT#
+	</select>
+
+	<select id="selectAll" resultMap="ExpertResult"
+		parameterClass="com.ah3nong.wd.bean.Expert">
+		select id, resume,photo_url, organization, summary,recommended
+		from wd_expert
+	</select>
+
+	<select id="selectByParams" 
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select e.id as id, e.resume as resume, e.organization as organization ,
+		e.summary as summary,e.recommended as recommended,e.photo_url as photourl,
+		u.username as username,u.nickname as nickname,u.email as email,u.avatar as avatar,u.sex as sex,u.full_name as fullName from
+		wd_expert e,wd_user u where e.id=u.id
+		<isNotNull prepend="and" property="recommended">
+			e.recommended=#recommended:TINYINT#
+		</isNotNull>
+		<isNotNull property="orderBy">order by $orderBy$</isNotNull>
+		<isNotNull property="count">limit #count:INT#</isNotNull>
+	</select>
+
+	<select id="selectRecommendedExpert" resultMap="ExpertResult"
+		parameterClass="map">
+		select e.id, e.resume, e.organization,
+		e.summary,e.recommended,e.photo_url,
+		u.username,u.nickname,u.email,u.avatar,u.sex,u.full_name from
+		wd_expert e,wd_user u where e.id=u.id and e.recommended =
+		#recommended:TINYINT# limit #count:INT#
+	</select>
+
+	<delete id="deleteByPrimaryKey"
+		parameterClass="com.ah3nong.wd.bean.Expert">
+		delete from wd_expert where id = #id:INT#
+	</delete>
+
+	<insert id="insert" parameterClass="com.ah3nong.wd.bean.Expert">
+		insert into wd_expert (id, resume,photo_url, organization,
+		summary,recommended) values (#id:INT#, #resume:VARCHAR#,
+		#photoUrl:VARCHAR#, #organization:VARCHAR#, #summary:VARCHAR#,
+		#recommended:TINYINT#)
+	</insert>
+
+	<update id="updateByPrimaryKey"
+		parameterClass="com.ah3nong.wd.bean.Expert">
+		update wd_expert set resume =
+		#resume:VARCHAR#,photo_url=#photoUrl:VARCHAR#, organization =
+		#organization:VARCHAR#, summary = #summary:VARCHAR#, recommended
+		= #recommended:TINYINT# where id = #id:INT#
+	</update>
+	<update id="updateByPrimaryKeySelective"
+		parameterClass="com.ah3nong.wd.bean.Expert">
+		update wd_expert
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="resume">
+				resume = #resume:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="photoUrl">
+				photo_url=#photoUrl:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="organization">
+				organization = #organization:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="summary">
+				summary = #summary:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="recommended">
+				recommended = #recommended:TINYINT#
+			</isNotNull>
+		</dynamic>
+		where id = #id:INT#
+	</update>
+	<select id="countAll" parameterClass="com.ah3nong.wd.bean.Expert"
+		resultClass="java.lang.Integer">
+		select count(*) from wd_expert
+	</select>
+
+	<select id="selectPaginationByPageNum"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select e.id as userid, e.organization as organization,e.summary as summary ,e.resume as resume,u.nickname
+		as nickname,u.username as username,u.full_name as full_name,u.sex as sex,e.recommended as
+		recommended from wd_expert e,wd_user u where e.id=u.id order by
+		e.id desc limit #start#,#size#
+	</select>
+	<select id="countPaginationByPageNum"
+		resultClass="java.lang.Integer" parameterClass="map">
+		select count(e.id) from wd_expert e,wd_user u where e.id=u.id
+		order by e.id desc
+	</select>
+	<select id="selectExpertsByDomainId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select i.id as id,a.full_name as name,a.username as username ,b.c as c from wd_user a
+		left join (select (d.id) id,count(1) c from wd_user d,wd_reply r
+		where d.id=r.user_id and r.is_accepted=1 group by d.id) b on
+		a.id=b.id left join (select (g.user_id) id from wd_user_domain g
+		where g.domain_id=#domainId#) i on b.id= i.id where b.c > 0 and
+		i.id>0 order by b.c desc
+	</select>
+	<!-- 获得所有专家以及专家的回答数和采纳率 -->
+	<select id="selectAllExpertsAndReplyNumAndIsAccepteds"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select e.id as id,u.full_name as name,u.username as username,e.summary as
+		summary,e.resume as resume, e.photo_url as photoUrl,b.c as count, bb.c as acceptNum,bb.c/b.c*100 as
+		isAcceptedCount from wd_user u,wd_expert e left join (select
+		el.id,count(r.user_id) as c from wd_reply r,wd_expert el where
+		el.id = r.user_id group by el.id ) b on b.id=e.id left join
+		(select el.id,count(r.user_id) as c from wd_reply r,wd_expert el
+		where el.id = r.user_id and r.is_accepted = 1 group by el.id )
+		bb on bb.id=e.id where e.recommended = 1 and u.id = e.id order
+		by acceptNum desc limit #start# , #size#
+	</select>
+	<!-- 获得所有专家以及专家的回答数和采纳率 -->
+	<select id="selectAllExpertsAndReplyNumc"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select e.id as id,u.full_name as name,u.username as username,e.summary as
+		summary,e.resume as resume, e.photo_url as photoUrl,b.c as count, bb.c as acceptNum,bb.c/b.c*100 as
+		isAcceptedCount from wd_user u,wd_expert e left join (select
+		el.id,count(r.user_id) as c from wd_reply r,wd_expert el where
+		el.id = r.user_id group by el.id ) b on b.id=e.id left join
+		(select el.id,count(r.user_id) as c from wd_reply r,wd_expert el
+		where el.id = r.user_id and r.is_accepted = 1 group by el.id )
+		bb on bb.id=e.id where e.recommended = 1 and u.id = e.id order
+		by count desc limit #start# , #size#
+	</select>
+	<!-- 根据专家的ID获得专家的所有领域 -->
+	<select id="selectDomainsByexpertId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select u.domain_id as id,d.name as name from wd_user_domain
+		u,wd_domain d where d.id = u.domain_id and u.user_id =
+		#expertId#
+	</select>
+
+	<!-- 根据以及领域的Id查找出该领域下面的所有专家的信息 -->
+	<select id="selectExpertAndReplyNumBydomainId"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select distinct(e.id) as id ,u.full_name as name ,u.username as username ,e.summary as
+		summary,e.resume as resume ,e.photo_url as photoUrl,b.c as count, bb.c as acceptNum, bb.c/b.c*100 as
+		isAcceptedCount from wd_expert e left join wd_user u on u.id =
+		e.id left join (select el.id,count(r.user_id) as c from wd_reply
+		r,wd_expert el where el.id = r.user_id group by el.id ) b on
+		b.id=e.id left join (select el.id,count(r.user_id) as c from
+		wd_reply r,wd_expert el where el.id = r.user_id and
+		r.is_accepted = 1 group by el.id ) bb on bb.id=e.id join (select
+		do.user_id as userId , do.domain_id ,dd.id as id,dd.node_path as
+		nodePath from wd_user_domain do,wd_domain dd where dd.id =
+		do.domain_id ) f on f.userId = u.id where e.recommended = 1 and
+		f.id = #expertID# or f.nodePath like '$expertId$%' order by acceptNum
+		desc limit #start#,#size#
+	</select>
+
+	<!-- 根据一级领域的ID查找该领域下面所有专家的数量 -->
+	<select id="selectCountExpertBydomainId"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select count(distinct u.id)as count from wd_user u join
+		wd_user_domain do on do.user_id = u.id join wd_domain d on d.id
+		= do.domain_id where u.is_expert=1 and d.id = #expertID# or
+		d.node_path like '$expertId$%'
+	</select>
+
+    <!-- 根据专家的ID获得该专家的所有信息 -->
+	<select id="selectExpertsByExpertId"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select
+		e.id as id,e.photo_url as photoUrl,e.resume as resume,e.organization as organization ,
+		e.summary as summary,u.full_name as fullName,u.username as username,b.c as count,bb.c/b.c*100 as isAcceptedExpertsNum
+		from wd_expert e left join wd_user u on e.id = u.id left join
+		(select r.user_id as id,count(r.user_id) c from wd_reply r group
+		by r.user_id) b on b.id = e.id left join (select r.user_id as
+		id,count(r.user_id) c from wd_reply r where r.is_accepted=#isAccepted#
+		group by r.user_id) bb on bb.id=e.id where 
+		e.id=#expertId#
+	</select>
+	
+	<!-- 获得搜索专家以及专家的回答数和采纳率 -->
+	<select id="selectExpertsByFullname"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select e.id as id,u.full_name as name,u.username as username,e.summary as
+		summary,e.resume as resume, e.photo_url as photoUrl,b.c as count, bb.c as acceptNum,bb.c/b.c*100 as
+		isAcceptedCount from wd_user u,wd_expert e left join (select
+		el.id,count(r.user_id) as c from wd_reply r,wd_expert el where
+		el.id = r.user_id group by el.id ) b on b.id=e.id left join
+		(select el.id,count(r.user_id) as c from wd_reply r,wd_expert el
+		where el.id = r.user_id and r.is_accepted = 1 group by el.id )
+		bb on bb.id=e.id where u.full_name like '%$fullname$%' and u.id = e.id order
+		by acceptNum desc limit #start# , #size#
+	</select>
+	<!-- 获得搜索专家数 -->
+	<select id="countExpertsByFullname"
+		resultClass="java.lang.Integer" parameterClass="map"
+		remapResults="true">
+		select count(id) from wd_user where is_expert=1 and full_name like '%$fullname$%'
+	</select>
+</sqlMap>

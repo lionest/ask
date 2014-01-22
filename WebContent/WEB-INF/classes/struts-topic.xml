@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="topic_web1" extends="web" namespace="/">
+		<action name="viewTopics" class="viewTopicsAction">
+			<result name="success">topic/index.jsp</result>
+		</action>
+		<action name="viewTopicDetail" class="detailTopicAction">
+			<result name="success">topic/topic_view.jsp</result>
+		</action>
+	</package>
+</struts>

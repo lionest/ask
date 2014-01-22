@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_question">
+	<resultMap id="QuestionResult" class="com.ah3nong.wd.bean.Question">
+		<result column="id" property="id" jdbcType="INT" />
+		<result column="subject" property="subject" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="user_id" property="user" select="wd_question.getUserById" />
+		<result column="created_time" property="createdTime" jdbcType="datetime" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="domain_id" property="domain" select="wd_question.getDomainById" />
+		<result column="solved_time" property="solvedTime" jdbcType="datetime" />
+		<result column="extra_content" property="extraContent"
+			jdbcType="VARCHAR" />
+		<result column="reply_num" property="replyNum" jdbcType="SMALLINT" />
+		<result column="recommended" property="recommended" jdbcType="TINYINT" />
+		<result column="view_count" property="viewCount" jdbcType="INTEGER" />
+		<result column="head" property="head" jdbcType="INTEGER" />
+		<result column="keywords" property="keywords" jdbcType="VARCHAR" />
+		<result column="summary" property="summary" jdbcType="VARCHAR" />
+		<result column="anonymous" property="anonymous" jdbcType="TINYINT" nullValue="0"/>
+		<result column="experience" property="experience" jdbcType="INT" nullValue="0"/>
+	</resultMap>
+
+	<resultMap id="UserResult" class="com.ah3nong.wd.bean.User">
+		<result column="id" property="id" jdbcType="INTEGER" nullValue="0" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="experience" property="experience" jdbcType="INTEGER" nullValue="0"/>
+		<result column="is_expert" property="expert" jdbcType="TINYINT" nullValue="0"/>
+	</resultMap>
+
+	<resultMap id="DomainResult" class="com.ah3nong.wd.bean.Domain">
+		<result column="id" property="id" jdbcType="INTEGER" nullValue="0" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getUserById" resultMap="UserResult">
+		select id, username ,nickname ,experience ,is_expert from
+		wd_user where id = #id:INTEGER#
+	</select>
+
+	<select id="getDomainById" resultMap="DomainResult">
+		select id, name from
+		wd_domain where id = #id:INTEGER#
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="QuestionResult"
+		parameterClass="com.ah3nong.wd.bean.Question">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,reply_num,
+		recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question where id = #id:INT#  
+	</select>
+	<select id="selectBySubjectAndCreatedTime" resultMap="QuestionResult"
+		parameterClass="com.ah3nong.wd.bean.Question">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,reply_num,
+		recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question where subject = #subject:VARCHAR# and created_time=#createdTime:DATETIME# limit 1
+	</select>
+	<select id="selectAll" resultMap="QuestionResult"
+		parameterClass="com.ah3nong.wd.bean.Question">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,reply_num,
+		recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question
+	</select>
+
+	<!-- 获取最新的打开的问题。 -->
+	<select id="selectLatestOpened" resultMap="QuestionResult"
+		parameterClass="java.lang.Integer">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,
+		extra_content,reply_num,recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question where status=1 order by created_time desc limit
+		#count:INT#
+	</select>
+
+	<!-- 获取最近的已解决的问题。 -->
+	<select id="selectLatestSolved" resultMap="QuestionResult"
+		parameterClass="java.lang.Integer">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,reply_num,
+		recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question where status=2 order by solved_time desc limit
+		#count:INT#
+	</select>
+	<!-- 获取浏览量最多的问题。 -->
+	<select id="selectMostViewCountQuestions" resultMap="QuestionResult"
+		parameterClass="java.lang.Integer">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,
+		reply_num,recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question where status in (1,2) order by view_count desc limit
+		#count:INT#
+	</select>
+	<!-- 获取推荐的问题。 -->
+	<select id="selectRecommended" resultMap="QuestionResult"
+		parameterClass="java.lang.Integer">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,reply_num,
+		recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question where recommended=1 and status in(1,2,99) order by created_time desc
+		limit
+		#count:INT#
+	</select>
+	<select id="selectByParams" resultMap="QuestionResult"
+		parameterClass="map">
+		select
+		id,subject,content,user_id,created_time,status,domain_id,solved_time,
+		extra_content,reply_num,recommended,view_count,head,keywords,summary,anonymous ,experience from wd_question
+		where status in (1,2,99)
+		<isNotNull prepend="and" property="recommended">
+			recommended=#recommended:TINYINT#
+		</isNotNull>
+		<isNotNull prepend="and" property="status">
+			status=#status:TINYINT#
+		</isNotNull>
+		<isNotNull property="orderBy">order by $orderBy$</isNotNull>
+		<isNotNull property="count">limit #count:INT#</isNotNull>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterClass="com.ah3nong.wd.bean.Question">
+		delete from
+		wd_question where id = #id:INT#
+	</delete>
+
+	<insert id="insert" parameterClass="com.ah3nong.wd.bean.Question">
+		insert into wd_question (id, subject,
+		content,user_id,created_time,status,
+		domain_id,solved_time,extra_content,reply_num,recommended,view_count,head,keywords,summary,anonymous,experience)
+		values
+		(#id:INTEGER#, #subject:VARCHAR#,
+		#content:VARCHAR#,#userId:INT#,
+		#createdTime:DATETIME#,
+		#status:TINYINT#, #domainId:INT#,
+		#solvedTime:DATETIME#,
+		#extraContent:VARCHAR#,
+		#replyNum:SMALLINT#,#recommended:TINYINT#,#viewCount:INTEGER#,#head:INTEGER#
+		,#keywords:VARCHAR#,#summary:VARCHAR#,#anonymous:TINYINT#,#experience:INT#
+		)
+		<selectKey keyProperty="id" resultClass="java.lang.Integer">
+			SELECT @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterClass="com.ah3nong.wd.bean.Question">
+		update
+		wd_question set subject = #subject:VARCHAR#, content =
+		#content:VARCHAR#, user_id = #userId:INT#, created_time =
+		#createdTime:DATETIME#, status = #status:TINYINT#, domain_id =
+		#domainId:INT#, solved_time = #solvedTime:DATETIME#,
+		extra_content =
+		#extraContent:VARCHAR#, reply_num =
+		#replyNum:SMALLINT#, recommended =
+		#recommended:TINYINT#,view_count = 
+		#viewCount:INTEGER#,head=#head:INTEGER#, 
+		keywords = #keywords:VARCHAR#,
+		summary = #summary:VARCHAR#
+		where
+		id = #id:INT#
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterClass="com.ah3nong.wd.bean.Question">
+		update wd_question
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="subject">
+				subject = #subject:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="content">
+				content = #content:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="userId">
+				user_id = #userId:INT#
+			</isNotNull>
+			<isNotNull prepend="," property="createdTime">
+				created_time =
+				#createdTime:DATETIME#
+			</isNotNull>
+			<isNotNull prepend="," property="status">
+				status = #status:TINYINT#
+			</isNotNull>
+			<isNotNull prepend="," property="domainId">
+				domain_id = #domainId:INT#
+			</isNotNull>
+			<isNotNull prepend="," property="solvedTime">
+				solved_time =
+				#solvedTime:DATETIME#
+			</isNotNull>
+			<isNotNull prepend="," property="extraContent">
+				extra_content =
+				#extraContent:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="replyNum">
+				reply_num =
+				#replyNum:SMALLINT#
+			</isNotNull>
+			<isNotNull prepend="," property="recommended">
+				recommended =
+				#recommended:TINYINT#
+			</isNotNull>
+			<isNotNull prepend="," property="viewCount">
+				view_count =
+				#viewCount:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="head">
+				head =
+				#head:INTEGER#
+			</isNotNull>
+			<isNotNull prepend="," property="keywords">
+				keywords = #keywords:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="summary">
+				summary = #summary:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		where id = #id:INT#
+	</update>
+	<select id="countAll" parameterClass="map" resultClass="java.lang.Integer">
+		select count(*) from wd_question  where status in(1,2,99) 
+		<isNotEmpty prepend="and" property="replyNum">
+			reply_num = #replyNum#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+			status = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="recommended">
+			recommended =
+			#recommended#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="experience">
+			<![CDATA[experience > #experience#]]>
+		</isNotEmpty>
+	</select>
+
+	<select id="countAllByDomainId" parameterClass="map"
+		resultClass="java.lang.Integer">
+		select count(q.id) from wd_domain d join wd_question q where q.status in(1,2,99) 
+			<!-- <isNotEmpty prepend="and" property="domainId">
+				d.node_path like '$domainId$%'
+			</isNotEmpty> -->
+		<isNotEmpty prepend="and" property="nodePath">
+			d.node_path like '$nodePath$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="default">
+			d.id = q.domain_id
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="recommended">
+			q.recommended =
+			#recommended#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="replyNum">
+			q.reply_num =
+			#replyNum#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status">
+			q.status = #status#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="experience">
+			<![CDATA[q.experience >]]> #experience#
+		</isNotEmpty>
+	</select>
+
+	<select id="selectPaginationByPageNum" resultMap="QuestionResult"
+		parameterClass="map">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,
+		solved_time,extra_content,reply_num,recommended,view_count,head,keywords,summary, anonymous,experience  from wd_question
+		where status in (1,2,99)
+		<isNotEmpty prepend="and" property="expertId">
+			id in (select
+			question_id from wd_question_expert where
+			expert_id=#expertId#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="content">
+			(subject like
+			'%$content$%' or content like
+			'%$content$%')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status1">
+			status != #status1#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="status2">
+			status = #status2#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="recommended">
+			recommended =
+			#recommended#
+		</isNotEmpty>
+		order by id desc limit #start#,#size#
+	</select>
+	<select id="countPaginationByPageNum" resultClass="java.lang.Integer"
+		parameterClass="map">
+		select count(id) from wd_question
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="expertId">
+				id in (select
+				question_id from wd_question_expert where
+				expert_id=#expertId#)
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="content">
+				(subject like
+				'%$content$%' or content like
+				'%$content$%')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status1">
+				status not in ($status1$)
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status2">
+				status = #status2#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="recommended">
+				recommended =
+				#recommended#
+			</isNotEmpty>
+		</dynamic>
+		order by id desc
+	</select>
+
+	<select id="selectQuestionsByPageNum" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.subject as subject,d.name
+		as name,q.reply_num as
+		replyNum from wd_question q,wd_domain d where
+		q.domain_id=d.id
+		and q.status=1 order by q.id desc limit #start#,#size#
+	</select>
+
+	<select id="selectCountByParams" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select u.id as id,u.full_name as
+		fullName,u.username as
+		username,count(r.id) as count
+		from wd_user u,wd_reply r where
+		u.id=r.user_id and u.id!=17 and r.is_accepted= 1 and probing_id
+		is null group by u.id
+		order by count desc limit 0,#isAcceptedCount#
+	</select>
+	
+	<select id="selectUserAcceptCountByParams" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select u.id as id,u.full_name as
+		fullName,u.username as
+		username,count(r.id) as count
+		from wd_user u,wd_reply r where u.id!=17 and
+		u.id=r.user_id and r.is_accepted= 1 and probing_id
+		is null group by u.id
+		order by count desc limit 0,#isAcceptedCount#
+	</select>
+	
+	<select id="selectAllDomainsAndQuestions" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		<!-- select a.id,a.name,a.node_path as nodePath,b.c as c 
+		from wd_domain a left join (
+		select left(d.node_path,2) node_path,count(1) c from wd_domain d,wd_question q 
+		where d.id=q.domain_id group by left(d.node_path,2)) b
+		on a.node_path=b.node_path where a.parent_id is null -->
+		select a.id,a.name,a.node_path,b.c from wd_domain a,
+		(select left(d.node_path,char_length('$nodePath$')) node_path,count(q.id) c from wd_domain d
+		 left join (select id,domain_id from wd_question where status in (1,2,99)) q
+		on d.id=q.domain_id
+		 where d.node_path like concat(left('$nodePath$',char_length('$nodePath$')-2),'_%') 
+		group by left(d.node_path,char_length('$nodePath$'))
+		) b
+		where a.node_path=b.node_path
+		order by a.node_path
+	</select>
+
+	<select id="selectAllQuestions" resultClass="java.util.HashMap" parameterClass="map" remapResults="true">
+		select q.id,q.subject,d.name,q.created_time as createdTime,q.reply_num as replyNum 
+		from wd_question q,wd_domain d 
+		where q.domain_id=d.id and d.id = #domainId#
+		order by q.id desc limit #start# , #size#
+	</select>
+	<select id="findQuestionByNodePathNotIncludeChild" resultClass="java.util.HashMap" parameterClass="map" remapResults="true">
+		select q.id,q.subject,d.name,q.created_time as createdTime,q.reply_num as replyNum ,q.experience as experience
+		from wd_question q,wd_domain d 
+		where q.domain_id=d.id and q.status in (1,2,99)
+		and d.node_path = #nodePath#
+		<isEqual prepend="and " property="type" compareValue="noResolve">q.status=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="resolved">q.status=2</isEqual>
+		<isEqual prepend="and " property="type" compareValue="recommend">q.recommended=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="noReply">q.reply_num=0</isEqual>
+		<isEqual prepend="and " property="type" compareValue="experience">
+	    	<![CDATA[q.experience>0]]>
+		</isEqual>
+		order by q.id desc limit #start# , #size#
+	</select>
+	<select id="findQuestionByNodePathIncludeChild" resultClass="java.util.HashMap" parameterClass="map" remapResults="true">
+		select q.id,q.subject,d.name,q.created_time as createdTime,q.reply_num as replyNum ,q.experience as experience
+		from wd_question q,wd_domain d
+		where q.domain_id=d.id and q.status in (1,2,99)
+		and d.node_path like '$nodePath$%'
+		<isEqual prepend="and " property="type" compareValue="noResolve">q.status=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="resolved">q.status=2</isEqual>
+		<isEqual prepend="and " property="type" compareValue="recommend">q.recommended=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="noReply">q.reply_num=0</isEqual>
+		<isEqual prepend="and " property="type" compareValue="experience">
+	    	<![CDATA[q.experience>0]]>
+		</isEqual>
+		order by q.id desc limit #start# , #size#
+	</select>
+	<select id="findQuestionByType" resultClass="java.util.HashMap" parameterClass="map" remapResults="true">
+		select q.id,q.subject,d.name,q.created_time as createdTime,q.reply_num as replyNum ,q.experience as experience
+		from wd_question q,wd_domain d
+		where q.domain_id=d.id and q.status in(1,2,99) 
+		<isEqual prepend="and " property="type" compareValue="noResolve">q.status=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="resolved">q.status=2</isEqual>
+		<isEqual prepend="and " property="type" compareValue="recommend">q.recommended=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="noReply">q.reply_num=0</isEqual>
+	    <isEqual prepend="and " property="type" compareValue="experience">
+	    	<![CDATA[q.experience>0]]>
+		</isEqual>
+		order by q.id desc limit #start# , #size#
+	</select>
+
+	<!-- 问答分类全部问题零回答选项 -->
+	<select id="selectNoReplyQuestions" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as
+		subject,d.name as name,
+		q.created_time as createdTime,q.reply_num as
+		replyNum from
+		wd_question q,wd_domain d where q.domain_id in (d.id) and
+		q.reply_num=0 
+	   <isNotEmpty prepend="and" property="domainId">
+			d.id = #domainId#
+		</isNotEmpty>
+		order by q.id desc limit #start# , #size#
+	</select>
+	<!-- 全部问题中待解决问题 -->
+	<select id="selectNoResolveQuestions" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as
+		subject,d.name as name,
+		q.created_time as createdTime,q.reply_num as
+		replyNum from
+		wd_question q,wd_domain d where q.domain_id in (d.id) and
+		q.status=1
+		<isNotEmpty prepend="and" property="domainId">
+				d.id = #domainId#
+		</isNotEmpty>
+		 order by q.id desc limit #start# , #size#
+	</select>
+
+	<!-- 全部问题中以解决的问题 -->
+	<select id="selectResolveQuestions" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as
+		subject,d.name as name,
+		q.created_time as createdTime,q.reply_num as
+		replyNum from
+		wd_question q,wd_domain d where q.domain_id in (d.id) and
+		q.status=2
+		   <isNotEmpty prepend="and" property="domainId">
+				d.id = #domainId#
+			</isNotEmpty>
+		 order by q.id desc limit #start# , #size#
+	</select>
+
+	<!-- 全部问题中精彩推荐的问题 -->
+	<select id="selectRecommendedQuestions" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as
+		subject,d.name as name,
+		q.created_time as createdTime,q.reply_num as
+		replyNum from
+		wd_question q,wd_domain d where q.domain_id in (d.id) and
+		q.recommended=1 
+		<isNotEmpty prepend="and" property="domainId">
+				d.id =
+				#domainId#
+			</isNotEmpty>
+		order by q.id desc limit #start# , #size#
+	</select>
+
+	<!-- 查找所有领域下的问题 -->
+
+	<!-- 查找所有问题的数量 -->
+	
+	<select id="selectAllDomainQuestionsNum" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select a.id as id,a.name as
+		name,a.node_path as nodePath,b.c as
+		c from wd_domain a left join (
+		select left(d.node_path,2)
+		node_path,count(1) c from wd_domain
+		d,wd_question q where
+		d.id=q.domain_id and q.status in (1,2,99) group by
+		left(d.node_path,2))
+		b on a.node_path=b.node_path where 
+		<![CDATA[a.parent_id<0]]> 
+		order by a.node_path
+	</select>
+	
+	<select id="selectNoReplyQuestionsNum" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select a.id as id,a.name as
+		name,a.node_path as nodePath,b.c as
+		c from wd_domain a left join (
+		select left(d.node_path,2)
+		node_path,count(1) c from wd_domain
+		d,wd_question q where
+		q.reply_num=0 and d.id=q.domain_id group by
+		left(d.node_path,2))
+		b on a.node_path=b.node_path where 
+		<![CDATA[a.parent_id<0]]>
+	</select>
+
+	<!-- 查找所有所有问题待解决的问题的数量 -->
+	<select id="selectNoResolveQuestionsNum" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select a.id as id,a.name as
+		name,a.node_path as nodePath,b.c as
+		c from wd_domain a left join (
+		select left(d.node_path,2)
+		node_path,count(1) c from wd_domain
+		d,wd_question q where
+		q.status=1 and d.id=q.domain_id group by
+		left(d.node_path,2)) b
+		on a.node_path=b.node_path where 
+		<![CDATA[a.parent_id<0]]>
+	</select>
+
+	<!-- 查找所有所有问题解决的问题的数量 -->
+	<select id="selectResolveQuestionsNum" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select a.id as id,a.name as
+		name,a.node_path as nodePath,b.c as
+		c from wd_domain a left join (
+		select left(d.node_path,2)
+		node_path,count(1) c from wd_domain
+		d,wd_question q where
+		q.status=2 and d.id=q.domain_id group by
+		left(d.node_path,2)) b
+		on a.node_path=b.node_path where 
+		<![CDATA[a.parent_id<0]]>
+	</select>
+
+	<!-- 查找推荐的问题的数量 -->
+	<select id="selectRecommendedQuestionsNum" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select a.id as id,a.name as
+		name,a.node_path as nodePath,b.c as
+		c from wd_domain a left join (
+		select left(d.node_path,2)
+		node_path,count(1) c from wd_domain
+		d,wd_question q where
+		q.recommended=1 and d.id=q.domain_id group by
+		left(d.node_path,2)) b on a.node_path=b.node_path where
+		<![CDATA[a.parent_id<0]]>
+	</select>
+
+	<!-- 根据一级领域的ID查找该领域下面所有的问题-->
+	<select id="selectQuestionsByDomainId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select distinct q.id as id
+		,q.subject as subject,q.domain_id as
+		domainId, d.name as
+		name,q.reply_num as replyNum,q.created_time
+		as createdTime from
+		wd_domain d join wd_question q where
+		d.node_path like '$domainId$%' and
+		d.id = q.domain_id order by
+		q.id desc limit #start# , #size#
+	</select>
+	<!-- 根据USERID获得所有的问题 -->
+	<select id="selectQuestionsByUserId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as subject,q.status as status,q.reply_num as replyNum,d.name as
+		name,q.created_time as createdTime from wd_question q join
+		wd_domain d on d.id=q.domain_id where q.user_id=#userId# and q.status in(1,2,99) order
+		by q.created_time desc limit #start#,#size#
+	</select>
+	<!-- 根据USERID获得所有已解决的问题 -->
+	<select id="selectResolvedQuestionsByUserId"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select  q.id as id,q.subject as subject,d.name as
+		name,q.created_time as createdTime, q.reply_num as replyNum from wd_question q join
+		wd_domain d on d.id=q.domain_id where q.user_id=#userId# and
+		q.status=2 order by q.created_time desc limit #start#,#size#
+	</select>
+	<select id="countQuestionsByUserId" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(distinct q.id) from wd_question q join wd_domain d on
+		d.id=q.domain_id where q.user_id=#userId# and q.status in(1,2,99)
+	</select>
+	<select id="countQuestionsHaveReplyByUserId" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(distinct q.id) from wd_question q join wd_domain d on
+		d.id=q.domain_id where q.user_id=#userId# and q.status in(1,2,99) and q.reply_num!=0
+	</select>
+	<select id="countResolvedQuestionsByUserId"
+		resultClass="java.lang.Integer" parameterClass="map"
+		remapResults="true">
+		select count(distinct q.id) from wd_question q join wd_domain d on
+		d.id=q.domain_id where q.user_id=#userId# and q.status=2 
+	</select>
+	<select id="selectNoResolvedQuestionsByUserId"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select  q.id as id,q.subject as subject,d.name as
+		name,q.created_time as createdTime, q.reply_num as replyNum from wd_question q join
+		wd_domain d on d.id=q.domain_id where q.user_id=#userId# and
+		q.status=1 order by q.created_time desc limit #start#,#size#
+	</select>
+	<select id="countNoResolvedQuestionsByUserId"
+		resultClass="java.lang.Integer" parameterClass="map"
+		remapResults="true">
+		select count(distinct q.id) from wd_question q join wd_domain d on
+		d.id=q.domain_id where q.user_id=#userId# and q.status=1 
+	</select>
+	<!-- 根据用户的ID获取所有回答过的问题 -->
+	<select id="selectReplyQuestionsByUserId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as subject,q.reply_num as replyNum,q.status as status,d.name as
+		name,r.created_time as createdTime  ,r.is_accepted as isAccepted ,q.user_id as userId from wd_question q join
+		wd_reply r on r.question_id =q.id join wd_domain d on
+		d.id=q.domain_id where r.user_id=#userId# and q.status in(1,2,99) group by q.id order by
+		r.created_time desc limit #start#,#size#
+	</select>
+	<!-- 根据用户的ID获取所有回答过并解决的问题 -->
+	<select id="selectReplyResolvedQuestionsByUserId"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select q.id as id,q.subject as subject,d.name as
+		name,r.created_time as createdTime ,q.user_id as userId ,q.reply_num as replyNum from wd_question q join
+		wd_reply r on r.question_id =q.id join wd_domain d on
+		d.id=q.domain_id where r.user_id=#userId# and q.status=2 group by q.id order by
+		r.created_time desc limit #start#,#size#
+	</select>
+	<select id="selectReplyNoResolvedQuestionsByUserId"
+		resultClass="java.util.HashMap" parameterClass="map"
+		remapResults="true">
+		select q.id as id,q.subject as subject,d.name as
+		name,r.created_time as createdTime ,q.user_id as userId ,q.reply_num as replyNum from wd_question q join
+		wd_reply r on r.question_id =q.id join wd_domain d on
+		d.id=q.domain_id where r.user_id=#userId# and q.status=1 group by q.id order by
+		r.created_time desc limit #start#,#size#
+	</select>
+	<select id="countReplyQuestionsByUserId" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(distinct q.id) from wd_question q join
+		wd_reply r on r.question_id =q.id join wd_domain d on
+		d.id=q.domain_id where r.user_id=#userId# and q.status in(1,2,99)
+	</select>
+	<select id="countReplyResolvedQuestionsByUserId"
+		resultClass="java.lang.Integer" parameterClass="map"
+		remapResults="true">
+		select count(distinct q.id) from wd_question q join
+		wd_reply r on r.question_id =q.id join wd_domain d on
+		d.id=q.domain_id where r.user_id=#userId# and q.status=2 
+	</select>
+	<select id="countReplyNoResolvedQuestionsByUserId"
+		resultClass="java.lang.Integer" parameterClass="map"
+		remapResults="true">
+		select count(distinct q.id) from wd_question q join
+		wd_reply r on r.question_id =q.id join wd_domain d on
+		d.id=q.domain_id where r.user_id=#userId# and q.status=1
+	</select>
+	<!-- 根据一级领域的ID查找该领域下面所有零回答的问题 -->
+	<select id="selectNoReplyQuestionsByDomainId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select distinct q.id as id
+		,q.subject as subject,q.domain_id as
+		domainId, d.name as
+		name,q.reply_num as replyNum,q.created_time
+		as createdTime from
+		wd_domain d join wd_question q where
+		d.node_path like '$domainId$%' and
+		d.id = q.domain_id and
+		q.reply_num=0 order by q.id desc limit #start# ,
+		#size#
+	</select>
+
+	<!-- 根据一级领域的ID查找该领域下面所有待解决的问题 -->
+	<select id="selectNoResolveQuestionsByDomainId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select distinct q.id as id
+		,q.subject as subject,q.domain_id as
+		domainId, d.name as
+		name,q.reply_num as replyNum,q.created_time
+		as createdTime from
+		wd_domain d join wd_question q where
+		d.node_path like '$domainId$%' and
+		d.id = q.domain_id and
+		q.status=1 order by q.id desc limit #start# ,
+		#size#
+	</select>
+
+	<!-- 根据一级领域的ID查找该领域下面所有已解决的问题 -->
+	<select id="selectResolveQuestionsByDomainId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select distinct q.id as id
+		,q.subject as subject,q.domain_id as
+		domainId, d.name as
+		name,q.reply_num as replyNum,q.created_time
+		as createdTime from
+		wd_domain d join wd_question q where
+		d.node_path like '$domainId$%' and
+		d.id = q.domain_id and
+		q.status=2 order by q.id desc limit #start# ,
+		#size#
+	</select>
+
+	<!-- 根据一级领域的ID查找该领域下面所有推荐的问题 -->
+	<select id="selectRecommendQuestionsByDomainId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select distinct q.id as id
+		,q.subject as subject,q.domain_id as
+		domainId, d.name as
+		name,q.reply_num as replyNum,q.created_time
+		as createdTime from
+		wd_domain d join wd_question q where
+		d.node_path like '$domainId$%' and
+		d.id = q.domain_id and
+		q.recommended=1 order by q.id desc limit #start#
+		, #size#
+	</select>
+
+	<select id="selectQuestionsById" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.status as
+		status,d.name as name,q.subject as
+		subject from wd_question q left join
+		wd_domain d on
+		d.id=q.domain_id where q.user_id=#expertId# and
+		q.status=#RESOLVED# or q.status=#NORESOLVED# order by q.id desc
+		limit
+		#start#,#size#
+	</select>
+	<select id="selectQuestionsByExpertId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as questionId ,q.subject as subject,q.status as qstatus, r.id as
+		id,d.name name,r.is_accepted
+		as status from wd_reply r left join
+		wd_question q on
+		q.id=r.question_id left join wd_domain d on
+		d.id=q.domain_id
+		where r.user_id=#expertId# and q.status in (1,2,99)  group by q.id order by r.id desc limit
+		#start#,#size#
+	</select>
+	<select id="CountQuestionsByExpertId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select count(distinct q.id) as count from
+		wd_reply r left join
+		wd_question q on q.id=r.question_id left join
+		wd_domain d on
+		d.id=q.domain_id where r.user_id=#expertId# and q.status in (1,2,99) 
+	</select>
+	<!-- 查询专家所提的问题 -->
+	<select id="selectQuestionsAskByExpert" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.subject as subject,q.id as
+		id,d.name as name,q.status as status from
+		wd_question q  left join wd_domain d on
+		d.id=q.domain_id
+		where q.user_id = #expertId#  and  (q.anonymous is null or q.anonymous =0)
+		and q.status != #status# order by q.created_time desc limit
+		#start#,#size#
+	</select>
+	<select id="CountQuestionsAskByExpert" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select count(q.id) as count from
+		wd_question q  left join wd_domain d on
+		d.id=q.domain_id
+		where q.user_id = #expertId# and  (q.anonymous is null or q.anonymous =0)
+		and q.status != #status# 
+	</select>
+	<!-- 查询对具体专家的所有提问 -->
+	<select id="selectQuestionsAskForExpert" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.subject as subject,q.status as status,q.id as
+		id,d.name as name,q.created_time as createdTime,q.reply_num as replyNum
+		from wd_question_expert e left join
+		wd_question q on
+		q.id=e.question_id left join wd_domain d on
+		d.id=q.domain_id
+		where e.expert_id=#userId# and q.status in(1,2,99) order by q.id desc limit
+		#start#,#size#
+	</select>
+	<select id="countQuestionsAskForExpert" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(q.id) as count
+		from wd_question_expert e left join
+		wd_question q on
+		q.id=e.question_id left join wd_domain d on
+		d.id=q.domain_id
+		where e.expert_id=#userId# and q.status in(1,2,99)
+	</select>
+	<!-- 查询对具体专家的所有已解决提问 -->
+	<select id="selectResolveQuestionsAskForExpert" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.subject as subject,q.id as
+		id,d.name as name,q.created_time as createdTime,q.reply_num as replyNum
+		from wd_question_expert e left join
+		wd_question q on
+		q.id=e.question_id left join wd_domain d on
+		d.id=q.domain_id
+		where e.expert_id=#userId# and q.status=2 order by q.id desc limit
+		#start#,#size#
+	</select>
+	<select id="selectNoResolveQuestionsAskForExpert" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.subject as subject,q.id as
+		id,d.name as name,q.created_time as createdTime,q.reply_num as replyNum
+		from wd_question_expert e left join
+		wd_question q on
+		q.id=e.question_id left join wd_domain d on
+		d.id=q.domain_id
+		where e.expert_id=#userId# and q.status=1 order by q.id desc limit
+		#start#,#size#
+	</select>
+	<select id="countResolveQuestionsAskForExpert" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(q.id) as count
+		from wd_question_expert e left join
+		wd_question q on
+		q.id=e.question_id left join wd_domain d on
+		d.id=q.domain_id
+		where e.expert_id=#userId# and q.status=2
+	</select>
+	
+	<select id="countNoResolveQuestionsAskForExpert" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(q.id) as count
+		from wd_question_expert e left join
+		wd_question q on
+		q.id=e.question_id left join wd_domain d on
+		d.id=q.domain_id
+		where e.expert_id=#userId# and q.status=1
+	</select>
+
+	<!-- 搜索 -->
+	<select id="selectSearchByTerms" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as subject,q.content as
+		content,q.reply_num as replyNum ,q.created_time as createdTime, d.name as
+		domainName,q.status as status from wd_question q right join
+		wd_domain d on d.id = q.domain_id where ((q.content like
+		'%$keyword$%' ) or ( q.subject like '%$keyword$%' )) and q.status in(1,2,99)  
+		<isNotEmpty prepend="and" property="status">
+				status = #status#
+		</isNotEmpty>
+		 order
+		by id desc limit #start#,#size#
+	</select>
+	<!-- 通过关键字获得搜索结果的数量 -->
+	<select id="CountQuestions" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select count(q.id) as count from wd_question q right join
+		wd_domain d on d.id = q.domain_id where ((q.content like
+		'%$keyword$%' ) or ( q.subject like '%$keyword$%' )) and q.status in(1,2,99)  
+		<isNotEmpty prepend="and" property="status">
+			q.status = #status#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据以及领域的Id获得该领域下的所有子领域的名字以及对应的问题的数量 -->
+	<select id="SelectDomainNameById" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select a.id,a.name,a.node_path,b.c from wd_domain a,
+		(select left(d.node_path,char_length(#nodePath#)+2) node_path,count(q.id) c from wd_domain d
+		 left join (select id, domain_id from wd_question where status in (1,2,99)) q
+		on d.id=q.domain_id
+		 where d.node_path like '$nodePath$_%'
+		group by left(d.node_path,char_length(#nodePath#)+2)
+		) b
+		where a.node_path=b.node_path
+		order by a.node_path
+    </select>
+    
+    	<!-- 获取推荐的问题为平台接口 -->
+	<select id="selectRecommendedForApi" resultMap="QuestionResult"
+		parameterClass="java.lang.Integer">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,reply_num,recommended,
+		view_count,head,keywords,summary,anonymous,experience
+		from wd_question where recommended=1 order by created_time desc
+		limit
+		#count:INT#
+	</select>
+	<!-- 获取头条的问题 平台接口 -->
+	<select id="selectHeadsForApi" resultMap="QuestionResult"
+		parameterClass="java.lang.Integer">
+		select id, subject,
+		content,user_id,created_time,status,domain_id,solved_time,extra_content,reply_num,
+		recommended,view_count,head,keywords,summary,anonymous,experience
+		from wd_question where head=1 order by created_time desc
+		limit
+		#count:INT#
+	</select>
+
+	<!-- 获取最新1条推荐带图片的 -->
+	<select id="selectRecommendedImageForApi" resultClass="java.util.HashMap" remapResults="true">
+	select a.id as id ,a.subject as subject,b.url as url from wd_question a  join wd_question_img b on a.id=b.question_id and a.recommended=1 where a.status in (1,2,99) and b.status = 1 group by a.id order by a.created_time desc limit 1
+	</select>
+	
+	<!-- 获取最新5条推荐带图片的问题 -->
+	<select id="selectRecommendedImageQuestions" resultClass="java.util.HashMap" remapResults="true">
+	select a.id as id ,a.subject as subject,b.url as url from wd_question a  join wd_question_img b on a.id=b.question_id and a.recommended=1 
+	where a.status in (1,2,99) and b.status = 1 group by a.id order by a.created_time desc limit 5
+	</select>
+	
+	<!-- 获取最新带图片的问题 -->
+	<select id="selectImgQuestions" parameterClass="map" resultClass="java.util.HashMap" remapResults="true">
+		select a.id as id ,a.subject as subject,b.url as url from wd_question a  join wd_question_img b on a.id=b.question_id  
+		where a.status in (1,2,99) and b.status = 1 group by a.id order by a.created_time desc limit #start# ,#size#
+	</select>
+	
+	<!-- 获得当前用户未回复过的未解决问题（分页） -->
+	<select id="selectQuestionsRecommendToExpert" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id, q.created_time as createdTime,q.subject as subject,q.reply_num as replyNum from wd_question q where status=1 
+		<isNotEmpty prepend="and" property="domainIds">
+			domain_id in  $domainIds$
+		</isNotEmpty>
+		and not exists (select 1 from  wd_reply a where a.user_id=#userId# and a.question_id=q.id)
+		order by q.id desc limit
+		#start#,#size#
+	</select>
+	
+	<!-- 获得当前用户未回复过的未解决问题的数目 -->
+	<select id="selectQuestionsRecommendToExpertNum" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(q.id) as num from wd_question q where status=1 
+		<isNotEmpty prepend="and" property="domainIds">
+				 domain_id in  $domainIds$
+		</isNotEmpty>
+		and not exists (select 1 from  wd_reply a where a.user_id=#userId# and a.question_id=q.id)
+	</select>
+	
+	<!-- 获得某日期之前的所有问题并修改状态 -->
+	<update id="updateStatusByCreatedTime" parameterClass="map">
+		update wd_question set status=#status:INT#
+		where unix_timestamp(created_time)&lt;unix_timestamp(#overdue:DATETIME#) 
+	</update>
+	
+	<!-- 根据用户id查评论问题-->
+	<select id="selectCommentQuestionsByUserId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as subject,q.status as status,q.reply_num as replyNum, q.user_id as userId ,d.name as
+			name,q.created_time as createdTime 
+		from wd_question q join wd_domain d on d.id=q.domain_id 
+		where q.id in 
+		( select question_id from wd_reply where id in( select reply_id  from wd_reply_comment where user_id=#userId:INT# ) )
+		and q.status in(1,2,99) 
+		order by q.created_time desc limit #start:INT#,#size:INT# 
+	</select>
+	<!-- 根据用户id查评论过的问题数 -->
+	<select id="countCommentQuestionsByUserId" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(distinct id) 
+		from wd_question where id in 
+		( select question_id from wd_reply where id in( select reply_id  from wd_reply_comment where user_id=#userId:INT# ) )
+		and status in(1,2,99) 
+	</select>
+	<!-- 根据用户id查已解决评论问题-->
+	<select id="selectCommentQuestionsResovedByUserId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as subject,q.status as status,q.reply_num as replyNum, q.user_id as userId ,d.name as
+			name,q.created_time as createdTime 
+		from wd_question q join wd_domain d on d.id=q.domain_id 
+		where q.id in 
+		( select question_id from wd_reply where id in( select reply_id  from wd_reply_comment where user_id=#userId:INT# ) )
+		and q.status=2 
+		order by q.created_time desc limit #start:INT#,#size:INT# 
+	</select>
+	<!-- 根据用户id查已解决评论过的问题数 -->
+	<select id="countCommentQuestionsResovedByUserId" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(distinct id) 
+		from wd_question where id in 
+		( select question_id from wd_reply where id in( select reply_id  from wd_reply_comment where user_id=#userId:INT# ) )
+		and status=2 
+	</select>
+	<!-- 根据用户id查没解决评论问题-->
+	<select id="selectCommentQuestionsNoResovedByUserId" resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select q.id as id,q.subject as subject,q.status as status,q.reply_num as replyNum, q.user_id as userId ,d.name as
+			name,q.created_time as createdTime 
+		from wd_question q join wd_domain d on d.id=q.domain_id 
+		where q.id in 
+		( select question_id from wd_reply where id in( select reply_id  from wd_reply_comment where user_id=#userId:INT# ) )
+		and q.status=1 
+		order by q.created_time desc limit #start:INT#,#size:INT# 
+	</select>
+	<!-- 根据用户id查没解决评论过的问题数 -->
+	<select id="countCommentQuestionsNoResovedByUserId" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(distinct id) 
+		from wd_question where id in 
+		( select question_id from wd_reply where id in( select reply_id  from wd_reply_comment where user_id=#userId:INT# ) )
+		and status=1 
+	</select>
+	<!-- 获得当天所有提问数 -->
+	<select id="todayQuestionCount" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(*) from wd_question where date(created_time)=CURDATE() and status in (1,2,99)
+	</select>
+	<!-- 获得当天所有回复数 -->
+	<select id="todayReplyCount" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(*) from wd_reply where date(created_time)=CURDATE() 
+	</select>
+	<!-- 获得大分类下面的所有一级分类的分类名和问题数 -->
+	<select id="selectDomainAndQusetionNumAsk"  resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select a.id as id,a.name as name,a.node_path as nodePath,b.c as count 
+		from wd_domain a 
+		left join (
+				select left(d.node_path,2) node_path,count(1) c from wd_domain d,wd_question q 
+				where d.id=q.domain_id and q.status in (1,2,99) 
+				group by left(d.node_path,2)
+		) b 
+		on a.node_path=b.node_path where a.parent_id=#parentId#
+	</select>
+	<!-- 获得大分类下的所有问题 -->
+	<select id="selectQuestionsAsk"  resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select left(d.node_path,2) node_path  ,q.subject subject ,q.id id  ,q.reply_num replyNum ,
+		q.created_time createdTime ,q.experience experience,d.name as name
+		from wd_domain d,wd_question q 
+		where d.id=q.domain_id and q.status in (1,2,99) 
+		<isEqual prepend="and " property="type" compareValue="noResolve">q.status=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="resolved">q.status=2</isEqual>
+		<isEqual prepend="and " property="type" compareValue="recommend">q.recommended=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="noReply">q.reply_num=0</isEqual>
+		<isEqual prepend="and " property="type" compareValue="experience">
+	    	<![CDATA[q.experience>0]]>
+		</isEqual>
+		and left(d.node_path,2) in (select node_path from wd_domain where parent_id=#parentId#)
+		order by q.id desc limit #start# , #size#
+	</select>
+	 <!-- 获得大分类下的所有问题数 -->
+	 <select id="countQuestionsAsk" resultClass="java.lang.Integer"
+		parameterClass="map" remapResults="true">
+		select count(q.id)   as count
+		from wd_domain d,wd_question q 
+		where d.id=q.domain_id and q.status in (1,2,99)  
+		<isEqual prepend="and " property="type" compareValue="noResolve">q.status=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="resolved">q.status=2</isEqual>
+		<isEqual prepend="and " property="type" compareValue="recommend">q.recommended=1</isEqual>
+		<isEqual prepend="and " property="type" compareValue="noReply">q.reply_num=0</isEqual>
+		<isEqual prepend="and " property="type" compareValue="experience">
+	    	<![CDATA[q.experience>0]]>
+		</isEqual>
+		and left(d.node_path,2) in (select node_path from wd_domain where parent_id=#parentId#)
+	</select>
+	<!-- 获得大分类下的5个图片问题 -->
+	<select id="selectImgQuestionsAsk"  resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select left(d.node_path,2) node_path  ,q.subject subject ,q.id id  ,i.url url
+		from wd_domain d,wd_question q  ,wd_question_img i 
+		where d.id=q.domain_id and q.status in (1,2,99)  
+			and i.question_id=q.id and i.status=1 and i.img_order=1
+		and left(d.node_path,2) in (select node_path from wd_domain where parent_id=#parentId#)
+		order by q.id desc limit #start#,#size#
+	</select>
+	<!-- 没有图片的问题 -->
+	<select id="selectNoImgQuestions" resultClass="java.util.HashMap"
+		parameterClass="map">
+		select
+		id,subject,content,user_id,created_time,status,domain_id,solved_time,
+		extra_content,reply_num,recommended,view_count,head,keywords,summary,anonymous ,experience from wd_question
+		where status in (1,2,99) and id not in (select question_id from wd_question_img where status=1 ) 
+		order by id desc limit #size#
+	</select>
+	
+	<select id="selecNoImgQuestionsByParentId"  resultClass="java.util.HashMap"
+		parameterClass="map" remapResults="true">
+		select left(d.node_path,2) node_path  ,q.subject subject ,q.id id  ,q.reply_num replyNum ,
+		q.created_time createdTime ,q.experience experience,d.name as name
+		from wd_domain d,wd_question q 
+		where d.id=q.domain_id and q.status in (1,2,99) 
+		and left(d.node_path,2) in (select node_path from wd_domain where parent_id=#parentId#)
+		and q.id not in (select question_id from wd_question_img where status=1 )
+		order by q.id desc limit #size# 
+	</select>
+	<update id="updateStatusByDomainId" parameterClass="com.ah3nong.wd.bean.Question">
+		update
+		wd_question set status=#status#
+		where
+		domain_id = #domainId#
+	</update>
+</sqlMap>

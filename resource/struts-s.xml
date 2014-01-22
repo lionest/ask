@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<!-- 提供给其他系统的接口 -->
+	<package name="expert_question" extends="json-2" namespace="/s/me">
+	<!-- 我的回答 -->
+		<action name="answer" class="expertAnswerAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	<!-- 我的提问 -->
+		<action name="ask" class="expertAskAction">
+			<result name="success" type="json"  />
+			<result name="error" type="json" />
+		</action>
+	<!-- 收到的求助 -->
+		<action name="help" class="expertReceiveAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	<!-- 为我推荐问题 -->
+		<action name="recommend" class="recommendToExpertQuestionAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	<!-- 用户信息（提问数，回答数，采纳数，采纳率，积分，领域，热门标签） -->
+		<action name="userDetail" class="userDetailAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	<!-- 获得最新十条问题 -->
+		<action name="listNewQuestions" class="listNewQuestionsAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	<!-- 获得最新十一条推荐问题 -->
+		<action name="listRecommendQuestions" class="listRecommendQuestionsAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	</package>
+<!-- 回复评论接口 -->
+	<package name="reply_comment" extends="json-2" namespace="/s/rc">
+	<!-- 列出回复评论 -->
+		<action name="listReplyComment" class="listReplyCommentAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+		<action name="addReplyComment" class="addReplyCommentAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	</package>
+<!-- GY问答接口 -->
+	<package name="gy_s" extends="web" namespace="/s/gy">
+		<action name="listQuestionsForGY" class="listQuestionsForGYAction" method="list">
+		</action>
+	</package>
+</struts>

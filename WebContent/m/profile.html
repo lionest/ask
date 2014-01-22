@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" />
+<title>管理区域</title>
+</head>
+<style type="text/css"> 
+/* CSS Document */ 
+
+body { 
+font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+color: #4f6b72; 
+background: #E6EAE9; 
+} 
+
+a { 
+color: #c75f3e; 
+} 
+
+#mytable { 
+width: 700px; 
+padding: 0; 
+margin: 0; 
+} 
+
+caption { 
+padding: 0 0 5px 0; 
+width: 700px; 
+font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+text-align: right; 
+} 
+
+th { 
+font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+color: #4f6b72; 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7; 
+border-top: 1px solid #C1DAD7; 
+letter-spacing: 2px; 
+text-transform: uppercase; 
+text-align: left; 
+padding: 6px 6px 6px 12px; 
+background: #CAE8EA no-repeat; 
+} 
+/*power by www.winshell.cn*/ 
+th.nobg { 
+border-top: 0; 
+border-left: 0; 
+border-right: 1px solid #C1DAD7; 
+background: none; 
+} 
+
+td { 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7;
+border-left: 1px solid #C1DAD7; 
+background: #fff; 
+font-size:11px; 
+padding: 6px 6px 6px 12px; 
+color: #4f6b72; 
+} 
+/*power by www.winshell.cn*/ 
+
+td.alt { 
+background: #F5FAFA; 
+color: #797268; 
+} 
+
+th.spec { 
+border-left: 1px solid #C1DAD7; 
+border-top: 0; 
+background: #fff no-repeat; 
+font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+} 
+
+th.specalt { 
+border-left: 1px solid #C1DAD7; 
+border-top: 0; 
+background: #f5fafa no-repeat; 
+font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+color: #797268; 
+} 
+/*---------for IE 5.x bug*/ 
+html>body td{ font-size:13px;} 
+body,td,th { 
+font-family: 宋体, Arial; 
+font-size: 13px; 
+} 
+.btn1_mouseover{
+BORDER-RIGHT: #7EBF4F 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: #7EBF4F 1px solid; PADDING-LEFT: 2px; FONT-SIZE: 12px; FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#ffffff, EndColorStr=#C1DAD7); BORDER-LEFT: #7EBF4F 1px solid; CURSOR: hand; COLOR: black; PADDING-TOP: 2px; BORDER-BOTTOM: #7EBF4F 1px solid
+}
+
+</style> 
+<body>
+<div id="man_zone">
+  <div style="margin:10px;">
+  <select>
+    <option>用户名</option>
+  </select>
+  <input type="button" value="检索"  class="btn1_mouseover"/>
+  <input type="button" value="添加"  class="btn1_mouseover" style="margin-left:1000px;"/>
+  </div>
+ <div class="pageContent" align="center">
+    <table class="table" width="1200" layoutH="138">
+        <thead>
+            <tr>
+                <th width="22">
+                    <input type="checkbox" group="entityIds" class="checkboxCtrl" />
+                </th>
+                <th width="50" orderField="name" class="asc">
+                    名字
+                </th>
+                <th width="50">
+                    电话
+                </th>
+                <th width="50">
+                    类型
+                </th>
+				 <th width="40">
+                    性别
+                </th>
+                <th width="60" align="center">
+                    状态
+                </th>
+                <th width="70">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${pager.pageRecords}" var="user" varStatus="s">
+            <tr target="sid_user" rel="1" style="text-align:left;">
+                <td>
+                    <input name="entityIds" value="${user.uid }" type="checkbox" />
+                </td>
+                <td>
+                    ${user.name }
+                </td>
+                  <td>
+                    ${user.mobile }
+                </td>
+                <td>
+                    <c:if test="${user.userType=='1'}">
+                    	普通用户
+                    </c:if>
+                    <c:if test="${user.userType=='2'}">
+                    	管理员
+                    </c:if>
+                </td>
+                <td>
+                   <c:if test="${user.gender=='M'}">
+                   男
+                   </c:if>
+                   <c:if test="${user.gender=='F'}">
+                  女
+                   </c:if>
+                </td>
+                <td>
+                <c:if test="${user.status=='A'}">
+                正常使用
+                </c:if>
+                 <c:if test="${user.status=='D'}">
+                已删除
+                </c:if>
+                 <c:if test="${user.status =='P'}">
+                暂停使用
+                </c:if>
+                 <c:if test="${user.status =='B'}">
+                黑名单
+                </c:if>
+                </td>
+                <td>&nbsp;
+                    <a title="确认解除黑名单吗？" target="ajaxTodo" href="unbindUser.action?uid=${user.uid }">解除</a>
+                    <a title="删除" target="ajaxTodo" href="removeMember.action?uid=${user.uid }" class="btnDel">删除</a>
+                </td>
+            </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+    <div class="panelBar">
+        <div class="pages" align="right" style="padding-right:50px; margin-top:10px;">
+            <span>当前页</span>
+           
+            <span>条，共${pager.totalRecords}条</span><span>下一页</span><span>上一页</span>
+        </div>
+    </div>
+</div>
+
+
+
+
+</div>
+</body>
+</html>

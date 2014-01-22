@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_question_expert" >
+  <resultMap id="QuestionExpertResult" class="com.ah3nong.wd.bean.QuestionExpert" >
+    <result column="question_id" property="questionId" jdbcType="INT" />
+    <result column="expert_id" property="expertId" jdbcType="INT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <select id="selectAll" resultMap="QuestionExpertResult" parameterClass="com.ah3nong.wd.bean.QuestionExpert" >
+    select question_id,expert_id,status
+    from wd_question_expert
+  </select>
+  
+  <select id="selectByQuestionId" resultMap="QuestionExpertResult" parameterClass="com.ah3nong.wd.bean.QuestionExpert" >
+    select question_id,expert_id,status
+    from wd_question_expert
+    where question_id = #questionId:INT#
+  </select>
+  
+  <delete id="deleteByQuestionId" parameterClass="com.ah3nong.wd.bean.QuestionExpert" >
+    delete from wd_question_expert
+    where question_id = #questionId:INT#
+  </delete>
+
+  <insert id="insert" parameterClass="com.ah3nong.wd.bean.QuestionExpert" >  
+    insert into wd_question_expert (question_id,expert_id,status)
+    values (#questionId:INT#, #expertId:INT#, #status:TINYINT#)
+  </insert>
+  
+  <select id="countAll" parameterClass="com.ah3nong.wd.bean.QuestionExpert" resultClass="java.lang.Integer" >
+    select count(*) from wd_question_expert   
+  </select>
+ 
+    <select id="selectPaginationByPageNum" resultMap="QuestionExpertResult"
+		parameterClass="map">
+		select question_id,expert_id,status from wd_question_expert
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="questionId">
+				question_id = #questionId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="expertId">
+				expert_id = #expertId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status = #status#
+			</isNotEmpty>
+		</dynamic>
+		order by question_id desc limit #start#,#size#
+	</select>
+	<select id="countPaginationByPageNum"
+		resultClass="java.lang.Integer" parameterClass="map">
+		select count(question_id)  from wd_question_expert
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="questionId">
+				question_id = #questionId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="expertId">
+				expert_id = #expertId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status = #status#
+			</isNotEmpty>
+		</dynamic>
+		order by question_id desc
+	</select>  
+</sqlMap>

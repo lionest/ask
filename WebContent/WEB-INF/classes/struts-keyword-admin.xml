@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<package name="viewKeywords" extends="web" namespace="/m/keyword">
+		<action name="list" class="viewKeywordsAction">
+			<result name="success">listKeyWords.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+	</package>
+	<package name="addKeywords" extends="web" namespace="/m/keyword">
+		<action name="add" class="newKeywordAction">
+			<result name="success" type="redirectAction">list</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+	</package>
+	<package name="delKeywords" extends="web" namespace="/m/keyword">
+		<action name="del" class="delKeywordAction" method="delKeyword">
+			<result name="success" type="redirectAction">list</result>
+		</action>
+		<action name="dels" class="delKeywordAction" method="delKeywords">
+			<result name="error" type="redirectAction">list</result>
+			<result name="success" type="redirectAction">list</result>
+		</action>
+	</package>
+	<package name="updateKeywords" extends="web" namespace="/m/keyword">
+		<action name="update" class="updateKeywordAction">
+			<result name="success" type="redirectAction">list</result>
+			<result name="input">updateKeyWords.jsp</result>
+		</action>
+	</package>
+	<package name="editKeywords" extends="web" namespace="/m/keyword">
+		<action name="edit" class="editKeywordAction">
+			<result name="success">updateKeyWords.jsp</result>
+		</action>
+	</package>
+</struts>

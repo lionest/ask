@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+ "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="10" maxSessions="10"
+		maxTransactions="10" useStatementNamespaces="true" />
+
+	<sqlMap resource="com/ah3nong/wd/dao/xml/audit_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/domain_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/expert_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/keyword_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/probing_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/probingHis_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/question_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/questionHis_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/questionExtraContentHis_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/questionExpert_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/questionImg_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/reply_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/replyHis_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/userDomain_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/user_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/admin_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/questionScore_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/questionKeyword_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/replyComment_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/topic_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/link_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/article_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/notice_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/sysdata_SqlMap.xml" />
+	<sqlMap resource="com/ah3nong/wd/dao/xml/expertAttachment_SqlMap.xml" />
+</sqlMapConfig>

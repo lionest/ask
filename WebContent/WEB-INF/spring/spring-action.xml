@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="  
+     http://www.springframework.org/schema/beans   
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/tx   
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+     http://www.springframework.org/schema/aop   
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="genericActionSupport" class="com.ah3nong.wd.action.GenericActionSupport"
+		lazy-init="true" abstract="true">
+	</bean>
+
+	<bean id="questionAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.AddQuestionAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="keywordService" ref="keywordService"></property>
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="userCenterAction" scope="prototype"
+		class="com.ah3nong.wd.action.center.UserCenterAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="userService" ref="userService"></property>
+	</bean>
+
+	<bean id="newQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.NewQuestionAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+		<property name="expertService" ref="expertService"></property>
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="editQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.EditQuestionAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="keywordService" ref="keywordService"></property>
+		<property name="questionKeywordService" ref="questionKeywordService"></property>
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="removeQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.RemoveQuestionAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="editQuestionImg" scope="prototype"
+		class="com.ah3nong.wd.action.question.EditQuestionImgAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="removeQuestionImg" scope="prototype"
+		class="com.ah3nong.wd.action.question.RemoveQuestionImgAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="replyAction" scope="prototype"
+		class="com.ah3nong.wd.action.reply.AddReplyAction" parent="genericActionSupport">
+		<property name="replyService" ref="replyService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="probingService" ref="probingService"></property>
+		<property name="keywordService" ref="keywordService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="editReply" scope="prototype"
+		class="com.ah3nong.wd.action.reply.EditReplyAction" parent="genericActionSupport">
+		<property name="replyService" ref="replyService"></property>
+		<property name="keywordService" ref="keywordService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="removeReply" scope="prototype"
+		class="com.ah3nong.wd.action.reply.RemoveReplyAction" parent="genericActionSupport">
+		<property name="replyService" ref="replyService"></property>
+		<property name="probingService" ref="probingService"></property>
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+
+	<bean id="acceptReply" scope="prototype"
+		class="com.ah3nong.wd.action.reply.ReplyAcceptAction" parent="genericActionSupport">
+		<property name="replyService" ref="replyService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="questionScoreService" ref="questionScoreService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+
+	<bean id="probingAction" scope="prototype"
+		class="com.ah3nong.wd.action.probing.AddProbingAction" parent="genericActionSupport">
+		<property name="probingService" ref="probingService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="keywordService" ref="keywordService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="editProbing" scope="prototype"
+		class="com.ah3nong.wd.action.probing.EditProbingAction" parent="genericActionSupport">
+		<property name="probingService" ref="probingService"></property>
+		<property name="keywordService" ref="keywordService"></property>
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="removeProbing" scope="prototype"
+		class="com.ah3nong.wd.action.probing.RemoveProbingAction" parent="genericActionSupport">
+		<property name="probingService" ref="probingService"></property>
+		<property name="replyService" ref="replyService"></property>
+	</bean>
+	<bean id="viewExpertAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.ViewExpertAction" parent="genericActionSupport">
+		<property name="expertService" ref="expertService"></property>
+	</bean>
+	<bean id="addExpertList" scope="prototype"
+		class="com.ah3nong.wd.action.expert.AddExpertList" parent="genericActionSupport">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="newExpertAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.NewExpertAction" parent="genericActionSupport">
+		<property name="expertService" ref="expertService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="domainService" ref="domainService"></property>
+		<property name="expertAttachmentService" ref="expertAttachmentService"></property>
+	</bean>
+	<bean id="viewQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.ViewQuestionAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="domainService" ref="domainService"></property>
+		<property name="topicService" ref="topicService"></property>
+	</bean>
+	<bean id="delQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.DelQuestionAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="detQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.DetailQuestionAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="probingService" ref="probingService"></property>
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionScoreService" ref="questionScoreService"></property>
+		<property name="questionKeywordService" ref="questionKeywordService"></property>
+		<property name="replyCommentService" ref="replyCommentService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="findExpertAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.FindExpertAction" parent="genericActionSupport">
+		<property name="expertService" ref="expertService"></property>
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="checkImgAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.CheckImgAction" parent="genericActionSupport">
+	</bean>
+
+	<bean id="viewDomainAction" scope="prototype"
+		class="com.ah3nong.wd.action.domain.ViewDomainAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="deleteExpertAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.DeleteExpertAction" parent="genericActionSupport">
+		<property name="expertService" ref="expertService"></property>
+	</bean>
+	<bean id="editExpertAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.EditExpertAction" parent="genericActionSupport">
+		<property name="expertService" ref="expertService"></property>
+		<property name="domainService" ref="domainService"></property>
+		<property name="expertAttachmentService" ref="expertAttachmentService"></property>
+	</bean>
+	<bean id="updateExpertAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.UpdateExpertAction" parent="genericActionSupport">
+		<property name="expertService" ref="expertService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="domainService" ref="domainService"></property>
+		<property name="expertAttachmentService" ref="expertAttachmentService"></property>
+	</bean>
+	<bean id="viewKeywordsAction" scope="prototype"
+		class="com.ah3nong.wd.action.keyword.ViewKeywordsAction" parent="genericActionSupport">
+		<property name="keywordService" ref="keywordService"></property>
+	</bean>
+	<bean id="newKeywordAction" scope="prototype"
+		class="com.ah3nong.wd.action.keyword.NewKeywordAction" parent="genericActionSupport">
+		<property name="keywordService" ref="keywordService"></property>
+	</bean>
+	<bean id="delKeywordAction" scope="prototype"
+		class="com.ah3nong.wd.action.keyword.DelKeywordAction" parent="genericActionSupport">
+		<property name="keywordService" ref="keywordService"></property>
+	</bean>
+	<bean id="updateKeywordAction" scope="prototype"
+		class="com.ah3nong.wd.action.keyword.UpdateKeywordAction" parent="genericActionSupport">
+		<property name="keywordService" ref="keywordService"></property>
+	</bean>
+
+	<bean id="editKeywordAction" scope="prototype"
+		class="com.ah3nong.wd.action.keyword.EditKeywordAction" parent="genericActionSupport">
+		<property name="keywordService" ref="keywordService"></property>
+	</bean>
+
+	<bean id="addDomainAction" scope="prototype"
+		class="com.ah3nong.wd.action.domain.AddDomainAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+	</bean>
+	<bean id="removeDomainAction" scope="prototype"
+		class="com.ah3nong.wd.action.domain.RemoveDomainAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionService" ref="questionService" />
+	</bean>
+	<bean id="newDomainAction" scope="prototype"
+		class="com.ah3nong.wd.action.domain.NewDomainAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+	</bean>
+	<bean id="editDomainAction" scope="prototype"
+		class="com.ah3nong.wd.action.domain.EditDomainAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+	</bean>
+	<bean id="indexAction" scope="prototype" class="com.ah3nong.wd.action.IndexAction">
+		<property name="questionService" ref="questionService" />
+		<property name="topicService" ref="topicService"/>
+		<property name="questionKeywordService" ref="questionKeywordService"/>
+		<property name="noticeService" ref="noticeService"/>
+		<property name="userService" ref="userService"/>
+	</bean>
+	<!-- @ZhuXL -->
+	<bean id="searchLoginUserAction" scope="prototype" class="com.ah3nong.wd.action.SearchLoginUserAction">
+		<property name="questionService" ref="questionService" />
+		<property name="userService" ref="userService"/>
+		<property name="noticeService" ref="noticeService"/>
+	</bean>
+	
+	<bean id="domainAction" scope="prototype"
+		class="com.ah3nong.wd.action.domain.DomainAction">
+		<property name="questionService" ref="questionService"></property>
+		<property name="domainService" ref="domainService"></property>
+	</bean>
+	<bean id="viewQuestionHis" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ViewQuestionHisAction">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="viewQEContentHis" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ViewQEContentHisAction">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="expertClassifyAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.ExpertClassifyAction">
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="expertService" ref="expertService"></property>
+	</bean>
+	<bean id="viewProbingHis" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ViewProbingHisAction">
+		<property name="probingService" ref="probingService"></property>
+	</bean>
+	<bean id="viewReplyHis" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ViewReplyHisAction">
+		<property name="replyService" ref="replyService"></property>
+	</bean>
+	<bean id="viewAudit" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ViewAuditAction">
+		<property name="auditService" ref="auditService"></property>
+	</bean>
+	<bean id="auditDetail" scope="prototype"
+		class="com.ah3nong.wd.action.audit.AuditDetailAction">
+		<property name="auditService" ref="auditService"></property>
+	</bean>
+	<bean id="questionHisDetail" scope="prototype"
+		class="com.ah3nong.wd.action.audit.QuestionHisDetailAction">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="qExHisDetail" scope="prototype"
+		class="com.ah3nong.wd.action.audit.QExHisDetailAction">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="probingHisDetail" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ProbingHisDetailAction">
+		<property name="probingService" ref="probingService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="replyHisDetail" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ReplyHisDetailAction">
+		<property name="replyService" ref="replyService"></property>
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="auditQuestionHisAction" scope="prototype"
+		class="com.ah3nong.wd.action.audit.AuditQuestionHisAction">
+		<property name="questionService" ref="questionService"></property>
+		<property name="auditService" ref="auditService"></property>
+	</bean>
+	<bean id="auditQExHisAction" scope="prototype"
+		class="com.ah3nong.wd.action.audit.AuditQExHisAction">
+		<property name="questionService" ref="questionService"></property>
+		<property name="auditService" ref="auditService"></property>
+	</bean>
+	<bean id="auditProbingHisAction" scope="prototype"
+		class="com.ah3nong.wd.action.audit.AuditProbingHisAction">
+		<property name="probingService" ref="probingService"></property>
+		<property name="auditService" ref="auditService"></property>
+	</bean>
+	<bean id="auditReplyHisAction" scope="prototype"
+		class="com.ah3nong.wd.action.audit.AuditReplyHisAction">
+		<property name="replyService" ref="replyService"></property>
+		<property name="auditService" ref="auditService"></property>
+	</bean>
+	<bean id="expertViewtAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.ExpertViewtAction">
+		<property name="questionService" ref="questionService"></property>
+		<property name="expertService" ref="expertService"></property>
+	</bean>
+
+	<bean id="webLoginAction" scope="prototype"
+		class="com.ah3nong.wd.action.login.WebLoginAction">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="signupAction" scope="prototype"
+		class="com.ah3nong.wd.action.login.SignupAction">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="searchAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.SearchAction">
+		<property name="questionService" ref="questionService"></property>
+		<property name="expertService" ref="expertService"></property>
+		<property name="topicService" ref="topicService"></property>
+	</bean>
+	
+	<bean id="apiAction" scope="prototype"
+		class="com.ah3nong.wd.api.WlwApiAction">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="updateQuestionDomainAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.UpdateQuestionDomainAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="topicService" ref="topicService"></property>
+		<property name="domainService" ref="domainService"></property>
+	</bean>
+	<bean id="createQuestionKeywordAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.CreateQuestionKeywordAction" parent="genericActionSupport">
+	</bean>
+	<bean id="userDetailAndQuestionsAction" scope="prototype"
+		class="com.ah3nong.wd.action.member.UserDetailAndQuestionsAction" parent="genericActionSupport">
+		<property name="userService" ref="userService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="questionKeywordService" ref="questionKeywordService"></property>
+		<property name="domainService" ref="domainService"></property>
+	</bean>
+	
+	<bean id="addReplyCommentAction" scope="prototype"
+		class="com.ah3nong.wd.action.replycomment.AddReplyCommentAction" parent="genericActionSupport">
+		<property name="replyCommentService" ref="replyCommentService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="addTopicAction" scope="prototype"
+		class="com.ah3nong.wd.action.topic.AddTopicAction" parent="genericActionSupport">
+		<property name="topicService" ref="topicService"></property>
+	</bean>
+	<bean id="updateTopicAction" scope="prototype"
+		class="com.ah3nong.wd.action.topic.UpdateTopicAction" parent="genericActionSupport">
+		<property name="topicService" ref="topicService"></property>
+	</bean>
+	<bean id="listTopicAction" scope="prototype"
+		class="com.ah3nong.wd.action.topic.ListTopicAction" parent="genericActionSupport">
+		<property name="topicService" ref="topicService"></property>
+	</bean>
+	<bean id="deleteTopicAction" scope="prototype"
+		class="com.ah3nong.wd.action.topic.DeleteTopicAction" parent="genericActionSupport">
+		<property name="topicService" ref="topicService"></property>
+	</bean>
+	<bean id="detailTopicAction" scope="prototype"
+		class="com.ah3nong.wd.action.topic.DetailTopicAction" parent="genericActionSupport">
+		<property name="topicService" ref="topicService"></property>
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="deleteTopicQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.topic.DeleteTopicQuestionAction" parent="genericActionSupport">
+		<property name="topicService" ref="topicService"></property>
+	</bean>
+	<bean id="viewTopicsAction" scope="prototype"
+		class="com.ah3nong.wd.action.topic.ViewTopicsAction" parent="genericActionSupport">
+		<property name="topicService" ref="topicService"></property>
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="addLinkAction" scope="prototype"
+		class="com.ah3nong.wd.action.link.AddLinkAction" parent="genericActionSupport">
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	<bean id="viewLinkAction" scope="prototype"
+		class="com.ah3nong.wd.action.link.ViewLinkAction" parent="genericActionSupport">
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	<bean id="updateLinkStatusAction" scope="prototype"
+		class="com.ah3nong.wd.action.link.UpdateLinkStatusAction" parent="genericActionSupport">
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	<bean id="articleToQuestionAction" scope="prototype"
+		class="com.ah3nong.wd.action.article.ArticleToQuestionAction" parent="genericActionSupport">
+		<property name="articleService" ref="articleService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="questionKeywordService" ref="questionKeywordService"></property>
+	</bean>
+	<bean id="newArticleAction" scope="prototype"
+		class="com.ah3nong.wd.action.article.NewArticleAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+	</bean>
+	<bean id="addArticleAction" scope="prototype"
+		class="com.ah3nong.wd.action.article.AddArticleAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="questionKeywordService" ref="questionKeywordService"></property>
+	</bean>
+	<bean id="editQuestionJsonAction" scope="prototype"
+		class="com.ah3nong.wd.action.question.EditQuestionJsonAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="showNoticeQuestionsAction" scope="prototype"
+		class="com.ah3nong.wd.action.notice.ShowNoticeQuestionsAction" parent="genericActionSupport">
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="showNoticeCountAction" scope="prototype"
+		class="com.ah3nong.wd.action.notice.ShowNoticeCountAction" parent="genericActionSupport">
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="noticeCenterAction" scope="prototype"
+		class="com.ah3nong.wd.action.notice.NoticeCenterAction" parent="genericActionSupport">
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<!-- freemarkeraction -->
+	<bean id="indexFmAction" scope="prototype"
+		class="com.ah3nong.wd.action.freemaker.IndexFmAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="questionKeywordService" ref="questionKeywordService"></property>
+		<property name="expertService" ref="expertService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+		<property name="topicService" ref="topicService"></property>
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	<bean id="domainFmAction" scope="prototype"
+		class="com.ah3nong.wd.action.freemaker.DomainFmAction" parent="genericActionSupport">
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	<bean id="detailQuestionFmAction" scope="prototype"
+		class="com.ah3nong.wd.action.freemaker.DetailQuestionFmAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="probingService" ref="probingService"></property>
+		<property name="domainService" ref="domainService"></property>
+		<property name="questionScoreService" ref="questionScoreService"></property>
+		<property name="questionKeywordService" ref="questionKeywordService"></property>
+		<property name="replyCommentService" ref="replyCommentService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	<bean id="userViewAction" scope="prototype"
+		class="com.ah3nong.wd.action.user.UserViewAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="domainService" ref="domainService"></property>
+		<property name="expertService" ref="expertService"></property>
+		<property name="expertAttachmentService" ref="expertAttachmentService"></property>
+	</bean>
+	<bean id="countAllUsersExperienceAction" scope="prototype"
+		class="com.ah3nong.wd.action.experience.CountAllUsersExperienceAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+		<property name="userService" ref="userService"></property>
+		<property name="questionScoreService" ref="questionScoreService"></property>
+	</bean>
+	<bean id="addUserAvatarAction" scope="prototype"
+		class="com.ah3nong.wd.action.user.AddUserAvatarAction" parent="genericActionSupport">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	<bean id="listSysdataAction" scope="prototype"
+		class="com.ah3nong.wd.action.system.ListSysdataAction" parent="genericActionSupport">
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="detailSysdataAction" scope="prototype"
+		class="com.ah3nong.wd.action.system.DetailSysdataAction" parent="genericActionSupport">
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="editSysdataAction" scope="prototype"
+		class="com.ah3nong.wd.action.system.EditSysdataAction" parent="genericActionSupport">
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="addSysdataAction" scope="prototype"
+		class="com.ah3nong.wd.action.system.AddSysdataAction" parent="genericActionSupport">
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="deleteExpertAttachmentAction" scope="prototype"
+		class="com.ah3nong.wd.action.expert.DeleteExpertAttachmentAction" parent="genericActionSupport">
+		<property name="expertAttachmentService" ref="expertAttachmentService"></property>
+	</bean>
+	<bean id="updateReplyStatusAction" scope="prototype"
+		class="com.ah3nong.wd.action.reply.UpdateReplyStatusAction" parent="genericActionSupport">
+		<property name="replyService" ref="replyService"></property>
+		<property name="questionService" ref="questionService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="updateProbingStatusAction" scope="prototype"
+		class="com.ah3nong.wd.action.probing.UpdateProbingStatusAction" parent="genericActionSupport">
+		<property name="probingService" ref="probingService"></property>
+		<property name="replyService" ref="replyService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="showAuditAction" scope="prototype"
+		class="com.ah3nong.wd.action.audit.ShowAuditAction" parent="genericActionSupport">
+		<property name="sysdataService" ref="sysdataService"></property>
+	</bean>
+	<bean id="listQuestionsForGYAction" scope="prototype"
+		class="com.ah3nong.wd.api.ListQuestionsForGYAction" parent="genericActionSupport">
+		<property name="questionService" ref="questionService"></property>
+	</bean>
+	<bean id="detailLinkAction" scope="prototype"
+		class="com.ah3nong.wd.action.link.DetailLinkAction" parent="genericActionSupport">
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	<bean id="updateLinkAction" scope="prototype"
+		class="com.ah3nong.wd.action.link.UpdateLinkAction" parent="genericActionSupport">
+		<property name="linkService" ref="linkService"></property>
+	</bean>
+	
+</beans>

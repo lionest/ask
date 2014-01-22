@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="question" extends="web" namespace="/m/question">
+		<action name="add" class="questionAction">
+			<result name="input">addQuestion.jsp</result>
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="edit" class="editQuestionAction">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="updateKeyword" class="editQuestionAction">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="remove" class="removeQuestionAction">
+			<result name="success" type="redirect">view.action</result>
+		</action>
+		<action name="editQuestionImg" class="editQuestionImg">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="removeQuestionImg" class="removeQuestionImg">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="addReply" class="replyAction">
+			<result name="success">showDetail.jsp</result>
+		</action>
+		<action name="editReply" class="editReply">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="removeReply" class="removeReply">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="addProbing" class="probingAction">
+			<result name="success">showDetail.jsp</result>
+		</action>
+		<action name="editProbing" class="editProbing">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="removeProbing" class="removeProbing">
+			<result name="success">result.jsp</result>
+		</action>
+		<action name="new" class="newQuestionAction">
+			<result name="input">index.jsp</result>
+			<result name="success">addQuestion.jsp</result>
+		</action>
+		<action name="view" class="viewQuestionAction">
+			<result name="success" >listQuestion.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="delete" class="delQuestionAction">
+			<result name="success" type="redirect">view.action</result>
+		</action>
+		<action name="detail" class="detQuestionAction">
+			<result name="success">showDetail.jsp</result>
+		</action>
+		<action name="keywordDetail" class="detQuestionAction">
+			<result name="success">updateKeyword.jsp</result>
+		</action>
+		<action name="findExpert" class="findExpertAction" method="findExpert">
+		</action>
+		<action name="checkImg" class="checkImgAction" method="checkImg">
+		</action>
+		<action name="updateQuestionDomain" class="updateQuestionDomainAction">
+			<result name="success" type="redirect">info.jsp</result>
+			<result name="input" type="redirect">info.jsp</result>
+		</action>
+	</package>
+	<package name="question_s_admin" extends="json-2" namespace="/m/question">
+		<action name="edits" class="editQuestionJsonAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	</package>
+</struts>

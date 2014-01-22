@@ -1,0 +1,107 @@
+.img_list1 {
+    width: 680px;
+    height: 602px;
+    overflow: auto;
+    margin: 0px auto;
+}
+
+.img_list1 ul {
+    margin: 10px 0px;
+    padding: 0px;
+    list-style: none outside none;
+}
+.img_list1 ul li {
+    float: left;
+    height: 165px;
+    width: 200px;
+    display: block;
+    margin: 12px 12px;
+}
+
+.img_list1 ul li img {
+    padding: 2px;
+    border: 1px solid rgb(218, 218, 218);
+}
+
+.topcititle{
+	margin-top: 10px;
+	margin-left: 10px;
+	font-size: 12px;
+}
+
+.topicview{
+	margin: 10px;
+	margin-top:0px;
+	margin-bottom:0px;
+	width: 680px;
+    height: 260px;
+}
+
+.topicviewleft{
+	float: left;
+	margin: 20px;
+	margin-top:0px;
+	width: 200px;
+	line-height: 32px;
+	font-family: "宋体",Arial,Helvetica,sans-serif;
+	font-size: 12px;
+	color: rgb(51, 51, 51);
+}
+.topicviewimg{
+	
+}
+.topicviewimg img {
+    padding: 2px;
+    border: 1px solid rgb(218, 218, 218);
+}
+
+.topicviewtitle{
+	margin-top: 20px;
+}
+
+.topicviewright{
+	margin:20px;
+	margin-top:0px;
+	float: left;
+	width: 370px;
+	height: 200px;
+}
+
+.topicq_subject{
+	margin:10px;
+	width: 350px;
+	height: 20px;
+	font-weight: 20px;
+	font-size: 12px;
+	
+}
+.topicq_subject b{
+	color: #5FA506;	
+}
+
+.topic_tit {
+    height: 30px;
+    padding: 10px 0px 10px 60px;
+    background: url("../images/zj_04.jpg") no-repeat scroll 20px 0px transparent;
+    color: rgb(0, 105, 62);
+    font-size: 20px;
+    font-family: "黑体";
+}
+
+.topic_list ul {
+    margin: 0px 0px;
+    padding: 0px;
+    list-style: none outside none;
+}
+.topic_list ul li {
+    float: left;
+    height: 100px;
+    width: 145px;
+    display: block;
+    margin: 5px 5px 18px 18px;
+}
+
+.topic_list ul li img {
+    padding: 2px;
+    border: 1px solid rgb(218, 218, 218);
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_admin">
+	<resultMap id="AdminResult" class="com.ah3nong.wd.bean.Admin">
+		<result column="id" property="id" jdbcType="INT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="salt" property="salt" jdbcType="VARCHAR" />
+		<result column="role" property="role" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectByAdminName" resultMap="AdminResult"
+		parameterClass="com.ah3nong.wd.bean.Admin">
+		select id, name, password, salt,role
+		from wd_admin
+		where name = #name:VARCHAR#
+	</select>
+	<insert id="insert" parameterClass="com.ah3nong.wd.bean.Admin">
+		insert into wd_admin (id, name, password,salt ,role )
+		values
+		(#id:INTEGER#, #name:VARCHAR#,#password:VARCHAR#,#salt:VARCHAR#,#role:VARCHAR#)
+		<selectKey keyProperty="id" resultClass="java.lang.Integer">
+			SELECT @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+</sqlMap>

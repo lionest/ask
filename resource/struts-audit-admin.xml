@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="audit" extends="web" namespace="/m/audit">
+		<action name="viewAudit" class="viewAudit">
+			<result name="success" >listAudit.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="viewQuestionHis" class="viewQuestionHis">
+			<result name="success" >listQuestionHis.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="viewQEContentHis" class="viewQEContentHis">
+			<result name="success" >listQEContentHis.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="viewProbingHis" class="viewProbingHis">
+			<result name="success" >listProbingHis.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="viewReplyHis" class="viewReplyHis">
+			<result name="success" >listReplyHis.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="questionHisDetail" class="questionHisDetail">
+			<result name="input">index.jsp</result>
+			<result name="success" >questionHisDetail.jsp</result>
+		</action>
+		<action name="qExHisDetail" class="qExHisDetail">
+			<result name="input">index.jsp</result>
+			<result name="success" >qExHisDetail.jsp</result>
+		</action>
+		<action name="probingHisDetail" class="probingHisDetail">
+			<result name="input">index.jsp</result>
+			<result name="success" >probingHisDetail.jsp</result>
+		</action>
+		<action name="replyHisDetail" class="replyHisDetail">
+			<result name="input">index.jsp</result>
+			<result name="success" >replyHisDetail.jsp</result>
+		</action>
+		<action name="auditDetail" class="auditDetail">
+			<result name="input">index.jsp</result>
+			<result name="success" >auditDetail.jsp</result>
+		</action>
+		<action name="auditQuestionHis" class="auditQuestionHisAction">
+			<result name="input">index.jsp</result>
+			<result name="success" >listQuestionHis.jsp</result>
+		</action>
+		<action name="auditQExHisAction" class="auditQExHisAction">
+			<result name="input">index.jsp</result>
+			<result name="success" >viewQEContentHis.action</result>
+		</action>
+		<action name="auditProbingHis" class="auditProbingHisAction">
+			<result name="input">index.jsp</result>
+			<result name="success" >viewQEContentHis.action</result>
+		</action>
+		<action name="auditReplyHis" class="auditReplyHisAction">
+			<result name="input">index.jsp</result>
+			<result name="success" >viewQEContentHis.action</result>
+		</action>
+		<action name="updateReplyStatus" class="updateReplyStatusAction">
+			<result name="success" type="redirectAction">viewReplyHis.action?status=4,5</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="updateProbingStatus" class="updateProbingStatusAction">
+			<result name="success" type="redirectAction">viewProbingHis.action?status=4,5</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="showAudit" class="showAuditAction">
+			<result name="success">listAudit.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="editAudit" class="editSysdataAction">
+			<result name="success" type="redirectAction">showAudit.action</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+	</package>
+</struts>

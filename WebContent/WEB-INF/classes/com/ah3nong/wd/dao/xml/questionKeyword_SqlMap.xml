@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_question_keyword">
+	<resultMap id="QuestionKeywordResult" class="com.ah3nong.wd.bean.QuestionKeyword">
+		<result column="id" property="id" jdbcType="INT" />
+		<result column="question_id" property="questionId" jdbcType="INT" />
+		<result column="keyword" property="keyword" jdbcType="VARCHAR" />
+	</resultMap>
+	<insert id="insert" parameterClass="com.ah3nong.wd.bean.QuestionKeyword">
+		insert into wd_question_keyword(id,question_id,keyword)
+		values
+		(#id:INTEGER#, #questionId:INT#,#keyword:VARCHAR#)
+		<selectKey keyProperty="id" resultClass="java.lang.Integer">
+			SELECT @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	<select id="selectByQuestionId"  resultMap="QuestionKeywordResult" parameterClass="com.ah3nong.wd.bean.QuestionKeyword">
+		select id,question_id,keyword from wd_question_keyword where question_id = #questionId:INT#
+	</select>
+	<delete id="deleteByQusetionId" parameterClass="com.ah3nong.wd.bean.QuestionKeyword" >
+	    delete from wd_question_keyword
+	    where question_id = #questionId:INT#
+  	</delete>
+	<select id="selectHotKeywords"  resultClass="java.util.HashMap" remapResults="true" parameterClass="map">
+		select count(*)  as count ,keyword from wd_question_keyword group by keyword  order by count desc limit #size:INT#
+	</select>
+</sqlMap>

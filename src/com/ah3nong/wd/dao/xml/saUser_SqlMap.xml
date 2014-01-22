@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="sa_user">
+	<resultMap id="SaUserResult" class="com.ah3nong.wd.bean.SaUser">
+		<result column="IS_EXPERT" property="isExpert"
+			jdbcType="TINYINT" />
+		<result column="USER_ID" property="userid" jdbcType="VARCHAR" />
+		<result column="PWD" property="pwd" jdbcType="VARCHAR" />
+		<result column="LAST_LOGIN_DATE" property="lastLoginDate"
+			jdbcType="DATETIME" />
+		<result column="LOGINS" property="logins" jdbcType="int" />
+	</resultMap>
+	<select id="selectByUserId" resultMap="SaUserResult"
+		parameterClass="java.lang.String">
+		select user_id, pwd, last_login_date,logins,is_expert from sa_user where user_id
+		= #useId:VARCHAR#
+	</select>
+	<update id="updateUserIsExpert"
+		parameterClass="com.ah3nong.wd.bean.SaUser">
+		update sa_user set IS_EXPERT=#isExpert:TINYINT# where
+		USER_ID=#userid:VARCHAR#
+	</update>
+	<update id="updateUserLoginData"
+		parameterClass="com.ah3nong.wd.bean.SaUser">
+		update sa_user set last_login_date=#lastLoginDate:DATETIME#,logins=#logins#
+		where USER_ID=#userid:VARCHAR#
+	</update>
+</sqlMap>

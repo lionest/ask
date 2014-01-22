@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="topic_web" extends="web" namespace="/m/topic">
+		<action name="addTopic" class="addTopicAction">
+			<result name="success" type="redirectAction">listTopic</result>
+			<result name="input" type="redirect">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="listTopic" class="listTopicAction">
+			<result name="success">list.jsp</result>
+			<result name="input" type="redirect">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="deleteTopic" class="deleteTopicAction">
+			<result name="success" type="redirectAction">listTopic</result>
+		</action>
+		<action name="detailTopic" class="detailTopicAction">
+			<result name="success">edit.jsp</result>
+		</action>
+		<action name="deleteTopicQuestion" class="deleteTopicQuestionAction">
+			<result name="success" type="redirectAction">detailTopic</result>
+		</action>
+		<action name="updateTopic" class="updateTopicAction">
+			<result name="success" type="redirectAction">listTopic</result>
+		</action>
+	</package>
+</struts>

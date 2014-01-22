@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="question_web" extends="web" namespace="/">
+		<action name="new" class="newQuestionAction">
+			<result name="success">ask.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="add" class="questionAction">
+			<result name="success">addResult.jsp</result>
+			<result name="input">addResult.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>  
+		</action>
+		<action name="edit" class="editQuestionAction">
+			<result name="input">info.jsp</result>
+			<result name="success">question/info.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="view" class="detQuestionAction">
+			<result name="success">view.jsp</result>
+		</action>
+		<action name="editQuestionImg" class="editQuestionImg">
+			<result name="success">info.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="removeQuestionImg" class="removeQuestionImg">
+			<result name="success" type="redirectAction">
+				<param name="actionName">question/view</param>
+				<param name="questionId">${questionImg.questionId}</param>
+			</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="findExpert" class="findExpertAction"
+			method="findExpert">
+			<result name="input">ask.jsp</result>
+			<result name="success">ask.jsp</result>
+		</action>
+		<action name="findExpertInfo" class="findExpertAction"
+			method="findExpertInfo">
+		</action>
+		<action name="addReply" class="replyAction">
+			<result name="success">question/info.jsp</result>
+			<result name="input">error.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="acceptReply" class="acceptReply">
+			<result name="success">question/info.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="editProbing" class="editProbing">
+			<result name="success">question/info.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="addProbing" class="probingAction">
+			<result name="success">question/info.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		<action name="editReply" class="editReply">
+			<result name="success">question/info.jsp</result>
+			<result name="login">${pageContext.request.contextPath}/error.jsp</result>
+			<interceptor-ref name="auth"></interceptor-ref>
+		</action>
+		 
+		 <action name="recQuestion" class="apiAction" method="getRecommendQuestions">
+		</action>
+		
+		<action name="imgQuestion" class="apiAction" method="getImageQuesitons">
+		</action>
+		
+		<action name="headQuestion" class="apiAction" method="getHeadQuestions">
+		</action>
+		
+	</package>
+	<package name="question_kwd" extends="json-2" namespace="/">
+		<action name="createQuestionKeyword" class="createQuestionKeywordAction">
+			<result name="success" type="json"  />	
+			<result name="error" type="json" />
+		</action>
+	</package>
+	<package name="question_search" extends="web" namespace="/search">
+		<action name="getNext" class="searchAction" method="getNext">
+             <result name="success">/search_list.jsp</result>
+        </action>
+        <action name="index" class="searchAction" method="execute">
+             <result name="success">/search_list.jsp</result>
+             <result name="expert">/expert/search.jsp</result>
+             <result name="topic">/topic/search.jsp</result>
+        </action>
+	</package>
+</struts>

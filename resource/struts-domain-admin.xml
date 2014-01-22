@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="domain" extends="web" namespace="/m/domain">
+		<action name="view" class="viewDomainAction">
+			<result name="success">listDomains.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="new" class="newDomainAction">
+			<result name="success">addDomain.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="add" class="addDomainAction">
+			<result name="success" type="redirect">info.jsp</result>
+			<result name="input">addDomain.jsp</result>
+		</action>
+		<action name="remove" class="removeDomainAction">
+			<result name="success" type="redirect">info.jsp</result>
+			<result name="input" type="redirect">info.jsp</result>
+		</action>
+		<action name="editList" class="editDomainAction" method="findDomains">
+			<result name="success" >updateDomain.jsp</result>
+		</action>
+		<action name="edit" class="editDomainAction" method="editDomain">
+			<result name="success" type="redirect">info.jsp</result>
+			<result name="error" >info.jsp</result>
+		</action>
+		
+		<!-- <action name="recommend" class="editDomainAction" method="recommend">
+			<result name="success" type="redirect">view.action</result>
+		</action> -->
+	</package>
+</struts>

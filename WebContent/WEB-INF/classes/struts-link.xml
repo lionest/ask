@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="web_link" extends="json-2" namespace="/link">
+		<!-- 提交友链申请 -->
+		<action name="addLink" class="addLinkAction">
+			<result name="success" type="json" />
+			<result name="input" type="json" />
+		</action>
+	</package>
+</struts>

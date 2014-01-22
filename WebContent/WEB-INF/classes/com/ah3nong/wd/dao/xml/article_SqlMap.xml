@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="article">
+	<resultMap id="ArticleResult" class="com.ah3nong.wd.bean.Article">
+		<result column="id" property="id" jdbcType="INT" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="keyword" property="keyword" jdbcType="VARCHAR" />
+		<result column="domain_id" property="domainId" jdbcType="INT" />
+	</resultMap>
+	<select id="selectAll"  resultMap="ArticleResult" >
+		select id,title,content,keyword,domain_id from article order by id
+	</select>
+</sqlMap>

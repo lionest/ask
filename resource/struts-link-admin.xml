@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="link" extends="web" namespace="/m/link">
+		<action name="viewLink" class="viewLinkAction">
+			<result name="success">listLinks.jsp</result>
+			<result name="input">info.jsp</result>
+		</action>
+		<action name="add" class="addLinkAction">
+			<result name="success" type="redirectAction">viewLink</result>
+			<result name="input" type="redirect">info.jsp</result>
+		</action>
+		<action name="update" class="updateLinkAction">
+			<result name="success" >${pageContext.request.contextPath}/m/link/info.jsp</result>
+			<result name="input" >${pageContext.request.contextPath}/m/link/info.jsp</result>
+		</action>
+		<action name="detail" class="detailLinkAction">
+			<result name="success">edit.jsp</result>
+			<result name="input" type="redirect">info.jsp</result>
+		</action>
+		<action name="updateLinkStatus" class="updateLinkStatusAction">
+			<result name="success" type="redirectAction">viewLink</result>
+			<result name="input" >info.jsp</result>
+		</action>
+	</package>
+</struts>

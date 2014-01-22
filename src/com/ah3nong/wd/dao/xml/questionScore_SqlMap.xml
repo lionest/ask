@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_question_score">
+	<resultMap id="QuestionScoreResult" class="com.ah3nong.wd.bean.QuestionScore">
+		<result column="id" property="id" jdbcType="INT" />
+		<result column="question_id" property="questionId" jdbcType="INT" />
+		<result column="replyuser_id" property="replyUserId" jdbcType="INT" />
+		<result column="score" property="score" jdbcType="INT" nullValue="4"/>
+		<result column="created_time" property="createdTime" jdbcType="datetime" />
+		<result column="experience" property="experience" jdbcType="INT" nullValue="0"/>
+	</resultMap>
+	<insert id="insert" parameterClass="com.ah3nong.wd.bean.QuestionScore">
+		insert into wd_question_score (id,question_id,replyuser_id,score,created_time,experience)
+		values
+		(#id:INTEGER#, #questionId:INT#,
+		#replyUserId:INT#, #score:INT#, 
+		#createdTime:DATETIME#,#experience:INT#)
+		<selectKey keyProperty="id" resultClass="java.lang.Integer">
+			SELECT @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	<select id="countUserScore"  resultClass="java.lang.Integer" parameterClass="com.ah3nong.wd.bean.QuestionScore">
+		select sum(score) from wd_question_score where replyuser_id = #replyUserId:INT#
+	</select>
+	<select id="selectByQuestionId"  resultMap="QuestionScoreResult" parameterClass="com.ah3nong.wd.bean.QuestionScore">
+		select id,question_id,replyuser_id,score,created_time,experience from wd_question_score 
+		where question_id = #questionId:INT# limit 1
+	</select>
+	<select id="selectAcceptQuestionByUserId"  resultClass="java.util.HashMap" parameterClass="java.lang.Integer">
+		select r.question_id as questionId ,s.score as score from wd_reply r  left join wd_question_score s  on r.question_id=s.question_id
+ 		where r.user_id=#userId:INT# and r.is_accepted=1
+	</select>
+</sqlMap>

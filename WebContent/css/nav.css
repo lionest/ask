@@ -1,0 +1,63 @@
+.fenlei {
+	width: 210px;
+	height:auto;
+	text-align: left;
+}
+
+.fenlei ul,p {
+	margin: 0;
+	padding: 0;
+}
+
+.fenlei h2{
+	list-style-type: none;
+	height: 37px;
+	color: #fff;
+	line-height: 37px;
+}
+
+.fenlei ul {
+	font-size: 0;
+	padding: 0 0 40px;
+}
+
+.fenlei ul li {
+	list-style-type: none;
+	padding-top: 5px;
+	color: #fff;
+	font-size: 12px;
+	height: 48px;
+	line-height: 24px;
+	position: relative;
+	border-bottom: 1px dashed rgb(174, 218, 205);
+	display: block;
+	width: 180px;
+	margin: 0 auto;
+}
+
+.fenlei ul li.hover_bg {
+	background: #EEFAF6;
+}
+
+.Secon_Dary {
+	width: 253px;
+	background: #EEFAF6;
+	position: absolute;
+	right: -253px;
+	top: 0;
+	padding-bottom: 30px;
+	display: none;
+	z-index:1; 
+}
+
+.Secon_Dary p {
+	padding: 0 20px;
+}
+
+.Secon_Dary a {
+	color: #00946E;
+}
+
+a {
+	cursor: pointer;
+}

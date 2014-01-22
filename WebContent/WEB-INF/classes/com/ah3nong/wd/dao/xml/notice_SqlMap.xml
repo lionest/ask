@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_notice">
+	<resultMap id="NoticeResult" class="com.ah3nong.wd.bean.Notice">
+		<result column="id" property="id" jdbcType="INT" />
+		<result column="question_id" property="questionId" jdbcType="INT" />
+		<result column="user_id" property="userId" jdbcType="INT" />
+		<result column="type" property="type" jdbcType="TINYINT" />
+		<result column="anchor" property="anchor" jdbcType="INT" />
+		<result column="created_time" property="createdTime" jdbcType="datetime" />
+		<result column="status" property="status" jdbcType="TINYINT" nullValue="0"/>
+	</resultMap>
+	
+	<insert id="insert" parameterClass="com.ah3nong.wd.bean.Notice">
+		insert into wd_notice (id, question_id,user_id,type,anchor,created_time,status)
+		values
+		(#id:INTEGER#, #questionId:INT#,
+		#userId:INT#,#type:INT#,#anchor:INT#,
+		#createdTime:DATETIME#,#status:TINYINT#)
+		<selectKey keyProperty="id" resultClass="java.lang.Integer">
+			SELECT @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	
+	<update id="updateStatusByQuestionIdAndUserId" parameterClass="com.ah3nong.wd.bean.Notice">
+		update wd_notice set status = #status:TINYINT#
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="questionId">
+				question_id = #questionId:INT#
+			</isNotNull>
+			<isNotNull prepend="and" property="userId">
+				user_id = #userId:INT#
+			</isNotNull>
+			<isNotNull prepend="and" property="type">
+				type = #type:INT#
+			</isNotNull>
+		</dynamic>
+	</update>
+	
+	<select id="selectByUserIdAndType" resultClass="java.util.HashMap" parameterClass="com.ah3nong.wd.bean.Notice">
+		select  a.id as id ,a.anchor as anchor ,b.subject as subject ,
+		b.createdTime as createdTime ,b.replyNum as replyNum ,b.domain as domain 
+		  from 
+		(select question_id as id , anchor as anchor ,count(distinct question_id)  from wd_notice 
+		where status=0 and type=#type:TINYINT# and user_id=#userId:INT# group by question_id  ) a  left join 
+		(select q.id as id ,q.subject as subject ,q.created_time as createdTime ,q.reply_num as replyNum ,d.name as domain 
+				from wd_question q left join wd_domain d on q.domain_id = d.id) b on a.id = b.id 
+		order by b.createdTime desc 
+	</select>
+	
+	<select id="countByUserIdAndType" resultClass="java.lang.Integer" parameterClass="com.ah3nong.wd.bean.Notice">
+		select count(*) from wd_notice where status=0 and type=#type:TINYINT# and user_id=#userId:INT#
+	</select>
+	
+</sqlMap>

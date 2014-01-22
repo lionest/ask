@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_reply_comment" >
+  <resultMap id="ReplyCommentResult" class="com.ah3nong.wd.bean.ReplyComment" >
+    <result column="id" property="id" jdbcType="INT" />
+    <result column="reply_id" property="replyId" jdbcType="INT" />
+    <result column="user_id" property="user" select="wd_reply_comment.getUserById" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="DATETIME" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap id="UserResult" class="com.ah3nong.wd.bean.User">
+		<result column="id" property="id" jdbcType="INTEGER"
+			nullValue="0" />
+		<result column="username" property="username"
+			jdbcType="VARCHAR" />
+		<result column="nickname" property="nickname"
+			jdbcType="VARCHAR" />
+		<result column="is_expert" property="expert"
+			jdbcType="TINYINT" nullValue="0"/>
+  </resultMap>
+  
+  <select id="getUserById" resultMap="UserResult">
+		select id,username,nickname,is_expert from wd_user where id = #id:INTEGER#
+  </select>
+  <insert id="insert" parameterClass="com.ah3nong.wd.bean.ReplyComment" >  
+    insert into wd_reply_comment (id, reply_id, user_id,content,created_time,status)
+    values (#id:INT#, #replyId:INT#, #userId:INT#, #content:VARCHAR#, #createdTime:DATETIME#,#status:TINYINT#)
+  </insert>
+  <select id="selectByReplyId" resultMap="ReplyCommentResult" parameterClass="com.ah3nong.wd.bean.ReplyComment" >
+    select id, reply_id,user_id,content,created_time,status
+    from wd_reply_comment where reply_id = #replyId:INTEGER# order by created_time desc
+  </select>
+  <select id="selectCommentNumByReplyId" resultClass="java.lang.Integer" parameterClass="com.ah3nong.wd.bean.ReplyComment" >
+    select count(*)
+    from wd_reply_comment where reply_id = #replyId:INTEGER# 
+  </select>
+  <update id="updateStatusByPrimaryKey" parameterClass="com.ah3nong.wd.bean.ReplyComment" >
+    update wd_reply_comment set status = #status:TINYINT#,
+    where id = #id:INT#
+  </update>
+</sqlMap>

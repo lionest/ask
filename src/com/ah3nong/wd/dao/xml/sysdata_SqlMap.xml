@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_sysdata">
+	<resultMap id="SysdataResult" class="com.ah3nong.wd.bean.Sysdata">
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="cname" property="cname" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<cacheModel id="sysdata-cache" type="LRU" readOnly="true" serialize="false">
+		<flushInterval hours="24"/>
+		<flushOnExecute statement="wd_sysdata.insert"/>
+		<flushOnExecute statement="wd_sysdata.updateByPrimaryKey"/>
+		<property name="cache-size" value="1000"/>
+	</cacheModel>
+
+	<select id="selectAll" resultMap="SysdataResult" parameterClass="com.ah3nong.wd.bean.Sysdata"  cacheModel="sysdata-cache">
+		select id, name, cname, content
+		from wd_sysdata
+	</select>
+	<select id="selectByPager" resultMap="SysdataResult" parameterClass="map">
+		select id, name, cname, content
+		from wd_sysdata order by id limit #start:INT#,#size:INT#
+	 </select>
+	<select id="selectByPrimarykey" resultMap="SysdataResult" parameterClass="com.ah3nong.wd.bean.Sysdata">
+		select id, name, cname, content
+		from wd_sysdata where id = #id:INTEGER#
+	</select>
+	<select id="countAll" resultClass="java.lang.Integer" parameterClass="map">
+		select count(*) from wd_sysdata
+	</select>
+	<insert id="insert" parameterClass="com.ah3nong.wd.bean.Sysdata" >
+		insert into wd_sysdata (id, name, cname, content)
+		values
+		(#id:INTEGER#, #name:VARCHAR#,#cname:VARCHAR#,#content:VARCHAR# )
+		<selectKey keyProperty="id" resultClass="java.lang.Integer">
+			SELECT @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	<update id="updateByPrimaryKey" parameterClass="com.ah3nong.wd.bean.Sysdata">
+		update wd_sysdata
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="name">
+				name = #name:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="cname">
+				cname = #cname:VARCHAR#
+			</isNotNull>
+			<isNotNull prepend="," property="content">
+				content = #content:VARCHAR#
+			</isNotNull>
+		</dynamic>
+		where id = #id:INTEGER#
+	</update>
+</sqlMap>

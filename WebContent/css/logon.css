@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+/* 右侧样式*/
+.c_rightarea{width:286px;float:right; overflow:hidden;}
+
+.c_denglu{ width:284px; border:#d0d0d0 1px solid; height:170px;}
+.c_denglu .u_list{ margin:10px;border-top:#aedacd 1px dashed; padding:12px 0 0 50px;}
+.c_denglu .u_list li{ float:left;color:#00693e; width:90px; padding-left:12px;background:url(../images/icon_06.jpg) left no-repeat; line-height:20px;}
+.c_denglu .u_list li a{color:#00693e;}
+
+.cr_tjzj{width:284px; border:#d0d0d0 1px solid; height:258px;margin-top:10px;}
+.cr_ad1{width:286px;margin-top:10px;}

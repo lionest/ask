@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.1//EN"  
+        "http://tuckey.org/res/dtds/urlrewrite3.1.dtd">
+<urlrewrite>
+<!-- 首页 -->
+	<rule>
+		<note>首页</note>
+		<from>^/$</from>
+		<to type="forward">/index.action</to>
+	</rule>
+	<rule>
+		<note>首页</note>
+		<from>^/index.html</from>
+		<to type="forward">/index.action</to>
+	</rule>
+<!-- 问题分类 -->
+	<rule>
+		<note>问题分类全部</note>
+		<from>^/domain/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?domain=$1</to>
+	</rule>
+	<rule>
+		<note>单个问题</note>
+		<from>^/question/([0-9]+).html</from>
+		<to type="forward">/question/view.action?questionId=$1</to>
+	</rule>
+<!-- 农事 -->
+	<rule>
+		<note>问农事首页</note>
+		<from>^/agriculture/index.html</from>
+		<to type="forward">/question/domain.action?homeon=agriculture&amp;parentId=-1</to>
+	</rule>
+	<rule>
+		<note>分类问题</note>
+		<from>^/agriculture/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=status&amp;homeon=agriculture&amp;domain=$1</to>
+	</rule>
+	<rule>
+		<note>问题按状态分类</note>
+		<from>^/agriculture/([a-zA-Z]+)/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=$1&amp;homeon=agriculture&amp;t=0&amp;domain=$2&amp;parentId=-1</to>
+	</rule>
+	<rule>
+		<note>分类问题翻页</note>
+		<from>^/agriculture/([a-zA-Z]+)/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=$1&amp;domain=$2&amp;currentPage=$3&amp;homeon=agriculture</to>
+	</rule>
+	<rule>
+		<note>全部问题翻页</note>
+		<from>^/agriculture/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=status&amp;domain=$1&amp;currentPage=$2&amp;homeon=agriculture</to>
+	</rule>
+<!-- 市场 -->	
+	<rule>
+		<note>问市场首页</note>
+		<from>^/market/index.html</from>
+		<to type="forward">/question/domain.action?homeon=market&amp;parentId=-2</to>
+	</rule>
+	<rule>
+		<note>分类问题</note>
+		<from>^/market/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=status&amp;homeon=market&amp;domain=$1</to>
+	</rule>
+	<rule>
+		<note>问题按状态分类</note>
+		<from>^/market/([a-zA-Z]+)/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=$1&amp;homeon=market&amp;t=0&amp;domain=$2</to>
+	</rule>
+	<rule>
+		<note>分类问题翻页</note>
+		<from>^/market/([a-zA-Z]+)/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=$1&amp;domain=$2&amp;currentPage=$3&amp;homeon=market</to>
+	</rule>
+	<rule>
+		<note>全部问题翻页</note>
+		<from>^/market/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=status&amp;domain=$1&amp;currentPage=$2&amp;homeon=market</to>
+	</rule>
+<!-- 政策 -->	
+	<rule>
+		<note>问政策首页</note>
+		<from>^/policy/index.html</from>
+		<to type="forward">/question/domain.action?homeon=policy&amp;parentId=-3</to>
+	</rule>
+	<rule>
+		<note>分类问题</note>
+		<from>^/policy/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=status&amp;homeon=policy&amp;domain=$1</to>
+	</rule>
+	<rule>
+		<note>问题按状态分类</note>
+		<from>^/policy/([a-zA-Z]+)/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=$1&amp;homeon=policy&amp;t=0&amp;domain=$2</to>
+	</rule>
+	<rule>
+		<note>分类问题翻页</note>
+		<from>^/policy/([a-zA-Z]+)/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=$1&amp;domain=$2&amp;currentPage=$3&amp;homeon=policy</to>
+	</rule>
+	<rule>
+		<note>全部问题翻页</note>
+		<from>^/policy/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=status&amp;domain=$1&amp;currentPage=$2&amp;homeon=policy</to>
+	</rule>
+<!-- 生活 -->	
+	<rule>
+		<note>问生活首页</note>
+		<from>^/life/index.html</from>
+		<to type="forward">/question/domain.action?homeon=life&amp;parentId=-4</to>
+	</rule>
+	<rule>
+		<note>分类问题</note>
+		<from>^/life/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=status&amp;homeon=life&amp;domain=$1</to>
+	</rule>
+	<rule>
+		<note>问题按状态分类</note>
+		<from>^/life/([a-zA-Z]+)/([0-9]+).html</from>
+		<to type="forward">/question/domain.action?terms=$1&amp;homeon=life&amp;t=0&amp;domain=$2</to>
+	</rule>
+	<rule>
+		<note>分类问题翻页</note>
+		<from>^/life/([a-zA-Z]+)/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=$1&amp;domain=$2&amp;currentPage=$3&amp;homeon=life</to>
+	</rule>
+	<rule>
+		<note>全部问题翻页</note>
+		<from>^/life/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/domain.action?terms=status&amp;domain=$1&amp;currentPage=$2&amp;homeon=life</to>
+	</rule>
+<!-- 专家 -->
+	<rule>
+		<note>专家首页</note>
+		<from>^/expert/index.html</from>
+		<to type="forward">/expert/list.action?homeon=expert</to>
+	</rule>
+	<rule>
+		<note>单个专家</note>
+		<from>^/expert/([0-9]+).html</from>
+		<to type="forward">/expert/expertView.action?homeon=expert&amp;expertId=$1</to>
+	</rule>
+	<rule>
+		<note>专家按领域分类</note>
+		<from>^/expert/domain/([0-9]+).html</from>
+		<to type="forward">/expert/list.action?homeon=expert&amp;domain=$1</to>
+	</rule>
+	<rule>
+		<note>专家按领域分类翻页</note>
+		<from>^/expert/domain/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/expert/list.action?domain=$1&amp;currentPage=$2&amp;homeon=expert</to>
+	</rule>
+	<rule>
+		<note>专家个人页面他的提问，回答</note>
+		<from>^/expert/([a-z]+)/([0-9]+).html</from>
+		<to type="forward">/expert/expertView.action?homeon=expert&amp;s=$1&amp;expertId=$2</to>
+	</rule>
+	<rule>
+		<note>专家个人页面他的提问，回答翻页</note>
+		<from>^/expert/([a-z]+)/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/expert/expertView.action?s=$1&amp;expertId=$2&amp;currentPage=$3&amp;homeon=expert</to>
+	</rule>
+<!-- 个人中心 -->
+	<rule>
+		<note>个人中心</note>
+		<from>^/i/index.html</from>
+		<to type="forward">/center.action</to>
+	</rule>
+	<rule>
+		<note>个人中心消息提醒-回复</note>
+		<from>^/i/reply.html</from>
+		<to type="forward">/noticeCenter.action?type=1</to>
+	</rule>
+	<rule>
+		<note>个人中心消息提醒-采纳</note>
+		<from>^/i/accept.html</from>
+		<to type="forward">/noticeCenter.action?type=2</to>
+	</rule>
+	<rule>
+		<note>个人中心消息提醒-评论</note>
+		<from>^/i/comment.html</from>
+		<to type="forward">/noticeCenter.action?type=3</to>
+	</rule>
+	<rule>
+		<note>个人中心消息提醒-追问</note>
+		<from>^/i/probing.html</from>
+		<to type="forward">/noticeCenter.action?type=4</to>
+	</rule>
+	<rule>
+		<note>个人中心消息提醒-审核未通过问题</note>
+		<from>^/i/auditfail.html</from>
+		<to type="forward">/noticeCenter.action?type=5</to>
+	</rule>
+	<rule>
+		<note>个人中心我的提问，回答，向我提问--全部问题</note>
+		<from>^/i/([a-z]+).html</from>
+		<to type="forward">/center.action?t1=$1</to>
+	</rule>
+	<rule>
+		<note>个人中心我的提问，回答，向我提问--全部问题翻页</note>
+		<from>^/i/([a-z]+)_([0-9]+).html</from>
+		<to type="forward">/center.action?t1=$1&amp;currentPage=$2</to>
+	</rule>
+	<rule>
+		<note>个人中心我的提问，回答，向我提问--已解决</note>
+		<from>^/i/([0-9]+)_([a-z]+).html</from>
+		<to type="forward">/center.action?s=$1&amp;t1=$2</to>
+	</rule>
+	<rule>
+		<note>个人中心我的提问，回答，向我提问--已解决翻页</note>
+		<from>^/i/([0-9]+)_([a-z]+)_([0-9]+).html</from>
+		<to type="forward">/center.action?s=$1&amp;t1=$2&amp;currentPage=$3</to>
+	</rule>
+<!-- 单个问题的添加，回复，追问的新增和修改 -->
+	<rule>
+		<note>新加问题</note>
+		<from>^/question/new.html</from>
+		<to type="forward">/question/new.action</to>
+	</rule>
+	<rule>
+		<note>新加咨询专家问题</note>
+		<from>^/question/new_([0-9]+).html</from>
+		<to type="forward">/question/new.action?t=$1</to>
+	</rule>
+	<rule>
+		<note>提交提问</note>
+		<from>^/p/question/add.html</from>
+		<to type="forward">/question/add.action</to>
+	</rule>
+	<rule>
+		<note>提交补充问题</note>
+		<from>^/p/question/edit.html</from>
+		<to type="forward">/edit.action</to>
+	</rule>
+	<rule>
+		<note>提交回答</note>
+		<from>^/p/question/addReply.html</from>
+		<to type="forward">/addReply.action</to>
+	</rule>
+	<rule>
+		<note>提交修改回答</note>
+		<from>^/p/question/editReply.html</from>
+		<to type="forward">/editReply.action</to>
+	</rule>
+	<rule>
+		<note>提交增加追问</note>
+		<from>^/p/question/addProbing.html</from>
+		<to type="forward">/addProbing.action</to>
+	</rule>
+	<rule>
+		<note>提交修改追问</note>
+		<from>^/p/question/editProbing.html</from>
+		<to type="forward">/editProbing.action</to>
+	</rule>	
+	<rule>
+		<note>选为满意回答</note>
+		<from>^/p/question/acceptReply/([0-9]+)_([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/acceptReply.action?questionId=$1&amp;userId=$2&amp;score=$3</to>
+	</rule>
+	<rule>
+		<note>修改问题图片</note>
+		<from>^/p/question/editQuestionImg.html</from>
+		<to type="forward">/question/editQuestionImg.action</to>
+	</rule>
+	<rule>
+		<note>删除问题图片</note>
+		<from>^/p/question/removeQuestionImg/([0-9]+).html</from>
+		<to type="forward">/question/removeQuestionImg.action?questionImg.id=$1</to>
+	</rule>
+<!-- 搜索 -->
+	<rule>
+		<note>搜索答案</note>
+		<from>^/search.html</from>
+		<to type="forward">/search.action</to>
+	</rule>
+<!-- 专题 -->
+	<rule>
+		<note>专题首页</note>
+		<from>^/topic/index.html</from>
+		<to type="forward">/viewTopics.action?homeon=topic</to>
+	</rule>
+	<rule>
+		<note>专题翻页</note>
+		<from>^/topic/p_([0-9]+).html</from>
+		<to type="forward">/viewTopics.action?homeon=topic&amp;currentPage=$1</to>
+	</rule>
+	<rule>
+		<note>一个专题的详情</note>
+		<from>^/topic/([0-9]+).html</from>
+		<to type="forward">/viewTopicDetail.action?homeon=topic&amp;id=$1</to>
+	</rule>
+<!-- 后台登陆 -->
+	<rule>
+		<note>首页</note>
+		<from>^/m/$</from>
+		<to type="forward">/m/login.jsp</to>
+	</rule>
+<!-- 用户页面 -->
+	<rule>
+		<note>用户页面</note>
+		<from>^/user/([0-9]+).html</from>
+		<to type="forward">/userView.action?viewUserId=$1</to>
+	</rule>
+	<rule>
+		<note>用户页面他的提问，回答</note>
+		<from>^/user/([a-z]+)/([0-9]+).html</from>
+		<to type="forward">/userView.action?s=$1&amp;viewUserId=$2</to>
+	</rule>
+	<rule>
+		<note>用户页面他的提问，回答翻页</note>
+		<from>^/user/([a-z]+)/([0-9]+)_([0-9]+).html</from>
+		<to type="forward">/userView.action?s=$1&amp;viewUserId=$2&amp;currentPage=$3</to>
+	</rule>
+</urlrewrite>

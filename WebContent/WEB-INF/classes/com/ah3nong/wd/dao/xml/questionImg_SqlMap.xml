@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_question_img" >
+  <resultMap id="QuestionImgResult" class="com.ah3nong.wd.bean.QuestionImg" >
+    <result column="id" property="id" jdbcType="INT" />
+    <result column="question_id" property="questionId" jdbcType="INT" />
+    <result column="img_order" property="imgOrder" jdbcType="TINYINT" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" nullValue="1"/>
+  </resultMap>
+  
+  <select id="selectAll" resultMap="QuestionImgResult" parameterClass="com.ah3nong.wd.bean.QuestionImg" >
+    select id,question_id,img_order,url,status
+    from wd_question_img
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="QuestionImgResult" parameterClass="com.ah3nong.wd.bean.QuestionImg" >
+    select id,question_id,img_order,url,status
+    from wd_question_img
+    where id = #id:INT#
+  </select>
+  
+  <select id="selectRecommendQuestionWithImg" resultMap="QuestionImgResult">
+  	select * from wd_question_img where question_id in 
+  		(select id from wd_question where recommended = 1) 
+  		and img_order =1 and status=1 
+  		limit 0,5;
+  </select>
+  
+  <select id="selectByQuestionId" resultMap="QuestionImgResult" parameterClass="com.ah3nong.wd.bean.QuestionImg" >
+    select id,question_id,img_order,url,status
+    from wd_question_img
+    <dynamic prepend="where" >
+      <isNotNull prepend="and" property="questionId" >
+        question_id = #questionId:INT#
+      </isNotNull>
+      <isNotNull prepend="and" property="status" >
+        status = #status:INT#
+      </isNotNull>
+    </dynamic>
+    order by img_order
+  </select>
+  
+  <delete id="deleteByQuestionId" parameterClass="com.ah3nong.wd.bean.QuestionImg" >
+    delete from wd_question_img
+    where question_id = #questionId:INT#
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterClass="com.ah3nong.wd.bean.QuestionImg" >
+    delete from wd_question_img
+    where id = #id:INT#
+  </delete>
+  
+  <update id="updateByPrimaryKey" parameterClass="com.ah3nong.wd.bean.QuestionImg" >
+    update wd_question_img
+    set question_id = #questionId:INT#,
+      img_order = #imgOrder:TINYINT#,
+      url = #url:VARCHAR#,
+      status=#status:TINYINT#
+    where id = #id:INT#
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterClass="com.ah3nong.wd.bean.QuestionImg" >
+    update wd_question_img
+    <dynamic prepend="set" >
+      <isNotNull prepend="," property="questionId" >
+        question_id = #questionId:INT#
+      </isNotNull>
+      <isNotNull prepend="," property="imgOrder" >
+        img_order = #imgOrder:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="url" >
+        url = #url:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="status" >
+        status = #status:TINYINT#
+      </isNotNull>
+    </dynamic>
+    where id = #id:INT#
+  </update>
+  <insert id="insert" parameterClass="com.ah3nong.wd.bean.QuestionImg" >  
+    insert into wd_question_img (question_id,img_order,url,status)
+    values (#questionId:INT#, #imgOrder:TINYINT#, #url:VARCHAR#,#status:TINYINT#)
+  </insert>
+  
+  <select id="countAll" parameterClass="com.ah3nong.wd.bean.QuestionImg" resultClass="java.lang.Integer" >
+    select count(*) from wd_question_img   
+  </select>
+ 
+    <select id="selectPaginationByPageNum" resultMap="QuestionImgResult"
+		parameterClass="map">
+		select id,question_id,img_order,url,status from wd_question_img
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="questionId">
+				question_id = #questionId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="imgOrder">
+				img_order = #imgOrder#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="url">
+				url like '%$url$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status = #status#
+			</isNotEmpty>
+		</dynamic>
+		order by id desc limit #start#,#size#
+	</select>
+	<select id="countPaginationByPageNum"
+		resultClass="java.lang.Integer" parameterClass="map">
+		select count(question_id)  from wd_question_img
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="id">
+				id = #id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="questionId">
+				question_id = #questionId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="imgOrder">
+				img_order = #imgOrder#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="url">
+				url like '%$url$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="status">
+				status = #status#
+			</isNotEmpty>
+		</dynamic>
+		order by id desc
+	</select>  
+</sqlMap>

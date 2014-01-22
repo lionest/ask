@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="sysdata" extends="web" namespace="/m/sysdata">
+		<action name="listSysdata" class="listSysdataAction">
+			<result name="success">listsysdata.jsp</result>
+		</action>
+		<action name="detailSysdata" class="detailSysdataAction">
+			<result name="success">edit.jsp</result>
+		</action>
+		<action name="detailSysdataLogo" class="detailSysdataAction">
+			<result name="success">editlogo.jsp</result>
+		</action>
+		<action name="editSysdata" class="editSysdataAction">
+			<result name="success" type="redirectAction">listSysdata.action</result>
+		</action>
+		<action name="addSysdata" class="addSysdataAction">
+			<result name="success" type="redirectAction">listSysdata.action</result>
+		</action>
+	</package>
+</struts>

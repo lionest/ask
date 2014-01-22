@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="u_web" extends="web" namespace="/">
+		<action name="userView" class="userViewAction">
+			<result name="success">user/index.jsp</result>
+			<result name="toMyCenter" type="redirect">i/index.html</result>
+		</action>
+		<action name="countAllUsersExperience" class="countAllUsersExperienceAction">
+			<result name="success">info.jsp</result>
+		</action>
+		<action name="addUserAvatar" class="addUserAvatarAction">
+			<result name="success" type="redirect">i/index.html</result>
+			<result name="toIndex" type="redirect">index.html</result>
+			<result name="input">question/addResult.jsp</result>
+		</action>
+	</package>
+</struts>

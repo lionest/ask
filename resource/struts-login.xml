@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="weblogin" extends="web" namespace="/">
+		<action name="login" class="webLoginAction">
+			<result name="success" type="redirectAction">
+				index?replyCount=${replyCount}&amp;acceptedPrecent=${acceptedPrecent}
+			</result>
+			<result name="input" type="redirect">
+				index.html
+			</result>
+		</action>
+		<action name="logout" class="webLoginAction" method="logout">
+			<result name="success" type="redirect">index.html</result>
+			<result name="input" type="redirect">index.html</result>
+		</action>
+	</package>
+</struts>

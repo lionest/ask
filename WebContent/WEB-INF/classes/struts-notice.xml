@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="notice_question" extends="json-2" namespace="/">
+		<action name="showNoticeQuestions" class="showNoticeQuestionsAction">
+			<result name="success" type="json"  />	
+			<result name="error" type="json" />
+		</action>
+		<action name="showNoticeCount" class="showNoticeCountAction">
+			<result name="success" type="json"  />	
+			<result name="error" type="json" />
+		</action>
+	</package>
+	<package name="notice_web" extends="web" namespace="/">
+		<action name="noticeCenter" class="noticeCenterAction">
+			<result name="success">notice/index.jsp</result>	
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="expert" extends="web" namespace="/m/expert">
+		<action name="list" class="viewExpertAction">
+			<result name="success">listExpert.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="addList" class="addExpertList">
+			<result name="success">addExpertlist.jsp</result>
+			<result name="input">info.jsp</result>
+			<interceptor-ref name="adminAuth"></interceptor-ref>
+		</action>
+		<action name="addExpert" class="newExpertAction" method="addExpert">
+			<result name="success">info.jsp</result>
+			<result name="error">info.jsp</result>
+		</action>
+		<action name="NewExpert" class="newExpertAction" method="NewExpert">
+			<!-- <result name="success">addExpert.jsp</result> -->
+			<result name="success">add.jsp</result>
+		</action>
+		<action name="delete" class="deleteExpertAction">
+			<result name="success" type="redirectAction">list.action</result>
+		</action>
+		<action name="editExpert" class="editExpertAction">
+			<result name="success" >editExpert.jsp</result>
+		</action>
+		<action name="updateExpert" class="updateExpertAction">
+			<result name="success" type="redirectAction">list.action</result>
+		</action>
+	</package>
+	<package name="expert_json-2" extends="json-2" namespace="/m/s">
+	<!-- 删除附件 -->
+		<action name="deleteExpertAttachment" class="deleteExpertAttachmentAction">
+			<result name="success" type="json" />
+			<result name="error" type="json" />
+		</action>
+	</package>
+	
+</struts>

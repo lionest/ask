@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="wd_user_domain" >
+  <resultMap id="UserDomainResult" class="com.ah3nong.wd.bean.UserDomain" >
+    <result column="user_id" property="userId" jdbcType="INT" />
+    <result column="domain_id" property="domainId" jdbcType="INT" />
+  </resultMap>
+  
+  <select id="selectAll" resultMap="UserDomainResult" parameterClass="com.ah3nong.wd.bean.UserDomain" >
+    select user_id,domain_id
+    from wd_user_domain
+  </select>
+  
+  <select id="selectByUserId" resultClass="java.util.HashMap" parameterClass="java.lang.Integer" >
+    select u.user_id as userId,u.domain_id as domainId,d.name as name
+    from wd_user_domain u,wd_domain d
+    where u.domain_id = d.id and u.user_id=#userId:INT#
+  </select>
+  
+  <select id="selectByDomainId" resultMap="UserDomainResult" parameterClass="java.lang.Integer" >
+    select user_id,domain_id
+    from wd_user_domain
+    where domain_id=#domainId:INT#
+  </select>
+  
+  <delete id="deleteByUserId" parameterClass="com.ah3nong.wd.bean.UserDomain"  >
+    delete from wd_user_domain
+    where user_id = #userId:INT#
+  </delete>
+
+  <insert id="insert" parameterClass="com.ah3nong.wd.bean.UserDomain" >  
+    insert into wd_user_domain (user_id,domain_id)
+    values (#userId:INT#, #domainId:INT#)
+  </insert>
+  
+  <select id="countAll" parameterClass="com.ah3nong.wd.bean.UserDomain" resultClass="java.lang.Integer" >
+    select count(*) from wd_user_domain   
+  </select>
+ 
+    <select id="selectPaginationByPageNum" resultMap="UserDomainResult"
+		parameterClass="map">
+		select user_id,domain_id from wd_user_domain
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userId">
+				user_id = #userId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="domainId">
+				domain_id = #domainId#
+			</isNotEmpty>
+		</dynamic>
+		order by userId desc limit #start#,#size#
+	</select>
+	<select id="countPaginationByPageNum"
+		resultClass="java.lang.Integer" parameterClass="map">
+		select count(userId)  from wd_user_domain
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="userId">
+				user_id = #userId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="domainId">
+				domain_id = #domainId#
+			</isNotEmpty>
+		</dynamic>
+		order by user_id desc
+	</select>  
+</sqlMap>
